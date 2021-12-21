@@ -33,6 +33,9 @@ namespace ShapingController
             hair    = new ShapingHair();
             cloth   = new ShapingCloth();
             sockets = new ShapingSockets();
+
+            ColorTable = new Dictionary<int, List<ShapingColorTableItem>>();
+            TextureTable = new Dictionary<int, List<ShapingTextureTableItem>>();
         }
 
         public void Setup(string faceconfig, string bodyconfig, string hairconfig, string makeupconfig, string clothconfig, string socketsconfig,
@@ -171,9 +174,14 @@ namespace ShapingController
 
         public void Setup(string path)
         {
+            LoadTextureConfig(path + FileNames.DefaultTextureTable);
+            LoadColorConfig(path + FileNames.DefaultColorTable);
+
             face.LoadConfig(path + FileNames.DefaultFaceConfig);
             body.LoadConfig(path + FileNames.DefaultBodyConfig);
             makeup.LoadConfig(path + FileNames.DefaultMakeupConfig);
+            makeup.SetTextureTable(TextureTable);
+            makeup.SetColorTable(ColorTable);
         }
 
         public void ImportData()
@@ -415,6 +423,16 @@ namespace ShapingController
             return body.GetSliderConfig();
         }
 
+        public List<ShapingImageConfig> GetMakeupImageConfig()
+        {
+            return makeup.GetImageConfig();
+        }
+
+        public List<ShapingColorTableItem> GetColorGroup(int tableindex)
+        {
+            return ColorTable[tableindex];
+        }
+
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(TYPE type, int index, float value)
         {
             List<ShapingSkeletonTrans> trans;
@@ -429,6 +447,33 @@ namespace ShapingController
             }
 
             return trans;
+        }
+
+
+        public ShapingMaterialColorItem GetMaterialColorConfigItem(TYPE type, int itemindex)
+        {
+            if(type == TYPE.MAKEUP)
+            {
+                return makeup.GetColorConfigItem(itemindex);
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+
+        public ShapingMaterialScalaItem GetMaterialScalaConfigItem(TYPE type, int itemindex)
+        {
+            if (type == TYPE.MAKEUP)
+            {
+                return makeup.GetScalaConfigItem(itemindex);
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
     }

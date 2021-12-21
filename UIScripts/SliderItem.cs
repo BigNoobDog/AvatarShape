@@ -39,8 +39,9 @@ namespace ShapingUI
         //    Revert();
         //}
 
-        public void UpdateInfo(int value, string desc)
+        public void UpdateInfo(TYPE typevalue, int value, string desc)
         {
+            type = typevalue;
             index = value;
             Desc.text = desc;
         }

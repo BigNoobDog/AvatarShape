@@ -46,7 +46,7 @@ namespace ShapingController
                 {
                     aryLine = strLine.Split(',');
 
-                    if (columnCount != strLine.Length)
+                    if (columnCount != aryLine.Length)
                     {
                         //print("");
                     }
@@ -75,10 +75,10 @@ namespace ShapingController
                     tmp_str = aryLine[4];
                     if(tmp_str != "None" && tmp_str != "")
                     {
-                        configitem.TextureDesc = tmp_str;
-
-                        tmp_str = aryLine[5];
                         configitem.TextureParamName = tmp_str;
+                       
+                        tmp_str = aryLine[5];
+                        configitem.TextureDesc = tmp_str;
 
                         tmp_int = int.Parse(aryLine[6]);
                         configitem.TextureIndex = tmp_int;
@@ -87,10 +87,10 @@ namespace ShapingController
                     tmp_str = aryLine[7];
                     if (tmp_str != "None" && tmp_str != "")
                     {
-                        configitem.ColorDesc = tmp_str;
-
-                        tmp_str = aryLine[8];
                         configitem.ColorParamName = tmp_str;
+                       
+                        tmp_str = aryLine[8];
+                        configitem.ColorDesc = tmp_str;
 
                         tmp_int = int.Parse(aryLine[9]);
                         configitem.ColorIndex = tmp_int;
@@ -100,10 +100,10 @@ namespace ShapingController
                     tmp_str = aryLine[10];
                     if (tmp_str != "None" && tmp_str != "")
                     {
-                        configitem.Slider1Desc = tmp_str;
-
-                        tmp_str = aryLine[11];
                         configitem.Slider1ParamName = tmp_str;
+                        
+                        tmp_str = aryLine[11];
+                        configitem.Slider1Desc = tmp_str;
 
                         tmp_f = float.Parse(aryLine[12]);
                         configitem.Slider1Limit = tmp_f;
@@ -113,10 +113,10 @@ namespace ShapingController
                     tmp_str = aryLine[13];
                     if(tmp_str != "None" && tmp_str != "")
                     {
-                        configitem.Slider2Desc = tmp_str;
-
-                        tmp_str = aryLine[14];
                         configitem.Slider2ParamName = tmp_str;
+                        
+                        tmp_str = aryLine[14];
+                        configitem.Slider2Desc = tmp_str;
 
                         tmp_int = int.Parse(aryLine[15]);
                         configitem.Slider2Limit = tmp_int;
@@ -126,15 +126,17 @@ namespace ShapingController
                     tmp_str = aryLine[16];
                     if(tmp_str != "None" && tmp_str != "")
                     {
-                        configitem.Slider3Desc = tmp_str;
+                        configitem.Slider3ParamName = tmp_str;
 
                         tmp_str = aryLine[17];
-                        configitem.Slider3ParamName = tmp_str;
+                        configitem.Slider3Desc = tmp_str;
 
                         tmp_int = int.Parse(aryLine[18]);
                         configitem.Slider3Limit = tmp_int;
 
                     }
+
+                    Config.Add(configitem);
                 }
             }
 
@@ -157,51 +159,89 @@ namespace ShapingController
             {
                 ShapingImageConfig config = Config[i];
 
-                if(config.TextureDesc != "None" && config.TextureDesc != "")
+                if(config.TextureDesc != null && config.TextureDesc != "None" && config.TextureDesc != "")
                 {
                     ShapingMaterialTextureItem item = new ShapingMaterialTextureItem();
-                    item.part = PART.HEAD;
+
+                    if (config.FirstLevelDesc == "ÑÛ¾¦")
+                        item.part = PART.EYE;
+                    else
+                        item.part = PART.HEAD;
                     item.TableIndex = config.TextureIndex;
                     item.name = config.TextureParamName;
                     textures.Add(item);
                 }
 
-                if(config.ColorDesc != "None" && config.ColorDesc != "")
+                if(config.ColorDesc != null && config.ColorDesc != "None" && config.ColorDesc != "")
                 {
                     ShapingMaterialColorItem item = new ShapingMaterialColorItem();
-                    item.part = PART.HEAD;
+                    if (config.FirstLevelDesc == "ÑÛ¾¦")
+                        item.part = PART.EYE;
+                    else
+                        item.part = PART.HEAD;
                     item.TableIndex = config.ColorIndex;
                     item.name = config.ColorParamName;
                     colors.Add(item);
                 }
 
-                if(config.Slider1Desc != "None" && config.Slider1Desc != "")
+                if(config.Slider1Desc != null && config.Slider1Desc != "None" && config.Slider1Desc != "")
                 {
                     ShapingMaterialScalaItem item = new ShapingMaterialScalaItem();
-                    item.part = PART.HEAD;
+                    if (config.FirstLevelDesc == "ÑÛ¾¦")
+                        item.part = PART.EYE;
+                    else
+                        item.part = PART.HEAD;
                     item.name = config.Slider1ParamName;
                     item.limit = config.Slider1Limit;
                     scalas.Add(item);
                 }
 
-                if (config.Slider2Desc != "None" && config.Slider2Desc != "")
+                if (config.Slider2Desc != null && config.Slider2Desc != "None" && config.Slider2Desc != "")
                 {
                     ShapingMaterialScalaItem item = new ShapingMaterialScalaItem();
-                    item.part = PART.HEAD;
+                    if (config.FirstLevelDesc == "ÑÛ¾¦")
+                        item.part = PART.EYE;
+                    else
+                        item.part = PART.HEAD;
                     item.name = config.Slider2ParamName;
                     item.limit = config.Slider2Limit;
                     scalas.Add(item);
                 }
 
-                if (config.Slider3Desc != "None" && config.Slider3Desc != "")
+                if (config.Slider3Desc != null && config.Slider3Desc != "None" && config.Slider3Desc != "")
                 {
                     ShapingMaterialScalaItem item = new ShapingMaterialScalaItem();
-                    item.part = PART.HEAD;
+                    if (config.FirstLevelDesc == "ÑÛ¾¦")
+                        item.part = PART.EYE;
+                    else
+                        item.part = PART.HEAD;
                     item.name = config.Slider3ParamName;
                     item.limit = config.Slider3Limit;
                     scalas.Add(item);
                 }
             }
+        }
+
+
+        public List<ShapingImageConfig> GetImageConfig()
+        {
+            return Config;
+        }
+
+        public ShapingMaterialColorItem GetColorConfigItem(int itemindex)
+        {
+            if (itemindex < colors.Count)
+                return colors[itemindex];
+            else
+                return null;
+        }
+
+        public ShapingMaterialScalaItem GetScalaConfigItem(int itemindex)
+        {
+            if (itemindex < colors.Count)
+                return scalas[itemindex];
+            else
+                return null;
         }
 
         public void ImportData(List<int> textures, List<int> colors, List<float> sliders)
@@ -313,13 +353,13 @@ namespace ShapingController
             return ret;
         }
 
-        List<ShapingImageConfig> Config;
-        List<ShapingMaterialTextureItem> textures;
-        List<ShapingMaterialColorItem> colors;
-        List<ShapingMaterialScalaItem> scalas;
-        List<int> TextureDatas;
-        List<int> ColorDatas;
-        List<float> SliderDatas;
+        private List<ShapingImageConfig> Config;
+        private List<ShapingMaterialTextureItem> textures;
+        private List<ShapingMaterialColorItem> colors;
+        private List<ShapingMaterialScalaItem> scalas;
+        private List<int> TextureDatas;
+        private List<int> ColorDatas;
+        private List<float> SliderDatas;
 
         private Dictionary<int, List<ShapingColorTableItem>> ColorTable;
         private Dictionary<int, List<ShapingTextureTableItem>> TextureTable;

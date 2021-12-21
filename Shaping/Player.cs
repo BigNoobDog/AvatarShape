@@ -20,6 +20,27 @@ namespace ShapingPlayer
         {
             MatMan.Setup(controller);
             SkeMan.Setup(controller, SkeletonRoot);
+
+            InitMatManMaterial();
+        }
+
+
+        private void InitMatManMaterial()
+        {
+            SkinnedMeshRenderer FaceSMR = Face.GetComponent<SkinnedMeshRenderer>();
+            List<Material> facematerials = new List<Material>();
+            FaceSMR.GetMaterials(facematerials);
+            if(facematerials.Count > 0) 
+            {
+                MatMan.SetFaceMaterial(facematerials[0]);
+            }
+
+            if (facematerials.Count > 2)
+            {
+                MatMan.SetEyeMaterial(facematerials[2]);
+            }
+
+
         }
 
         // Update is called once per frame
@@ -46,7 +67,27 @@ namespace ShapingPlayer
 
         public UnityEngine.Events.UnityAction<TYPE, int, float> GetSliderEventHandle()
         {
-            return SkeMan.OnSliderValueChangeFromUI;
+            return OnSliderValueChangeFromUI;
+        }
+
+        public UnityEngine.Events.UnityAction<TYPE, int, Color> GetColorEventHandle()
+        {
+            return MatMan.OnColorValueChangedFromUI;
+        }
+
+
+        public void OnSliderValueChangeFromUI(TYPE type, int index, float value)
+        {
+            if(type == TYPE.FACE || type == TYPE.BODY)
+            {
+                SkeMan.OnSliderValueChangeFromUI(type, index, value);
+            }
+
+            if(type == TYPE.MAKEUP)
+            {
+                MatMan.OnSliderValueChangeFromUI(type, index, value);
+            }
+
         }
 
 

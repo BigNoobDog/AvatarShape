@@ -72,6 +72,8 @@ namespace ShapingPlayer
             }
         }
 
+
+
         private ShapingControllerCore controller;
         public GameObject SkeletonRoot;
 

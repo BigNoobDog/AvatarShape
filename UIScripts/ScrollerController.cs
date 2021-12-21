@@ -22,8 +22,9 @@ namespace ShapingUI
             
         }
 
-        public void Setup(RectTransform blockp)
+        public void Setup(TYPE typevalue, RectTransform blockp)
         {
+            type = typevalue;
             BlockItemPrototype = blockp;
 
             Component[] objs = gameObject.GetComponentsInChildren<Component>();
@@ -48,9 +49,23 @@ namespace ShapingUI
             int index = config.index;
             string itemdesc = config.thirdlevelDesc;
 
-            if(blockid >= blocks.Count)
+            //if the block whose index is blockid is not existed, Create one.
+            CheckBlock(blockid, desc);
+
+            UIBlock block = blocks[blockid];
+            if (block.GetCurSliderNum() > index)
+                return;
+
+            block.UpdateInfo(blockid, desc);
+            
+            block.AddSliderItem(index, itemdesc);
+        }
+
+        private void CheckBlock(int blockid, string blockname)
+        {
+            if (blockid >= blocks.Count)
             {
-                for(int i = blocks.Count; i <= blockid; i ++)
+                for (int i = blocks.Count; i <= blockid; i++)
                 {
                     RectTransform blockpanel = GameObject.Instantiate(BlockItemPrototype);
                     if (blockpanel != null && Content != null)
@@ -64,21 +79,41 @@ namespace ShapingUI
                         blockpanel.sizeDelta = presizeD;
 
                     }
-                    blockpanel.name = config.firstlevelDesc;
+                    blockpanel.name = blockname;
                     blockpanel.gameObject.SetActive(true);
                     UIBlock blockscript = blockpanel.GetComponent<UIBlock>();
-                    blockscript.Setup();
+                    blockscript.Setup(type);
                     blocks.Add(blockscript);
                 }
             }
+        }
+
+        public void AddGroupSliderItem(ShapingUIEditorSlider config)
+        {
+            int blockid = config.firstlevel;
+            string desc = config.firstlevelDesc;
+            int index = config.index;
+            string itemdesc = config.thirdlevelDesc;
+
+            CheckBlock(blockid, desc);
 
             UIBlock block = blocks[blockid];
-            if (block.GetCurSliderNum() > index)
-                return;
 
             block.UpdateInfo(blockid, desc);
-            
-            block.AddSliderItem(index, itemdesc);
+
+            block.AddGroupSliderItem(index, itemdesc);
+        }
+
+        public void AddColorGroup(int blockid, int groupid, string blocdesc, string colorgroupdesc, List<ShapingColorTableItem> group)
+        {
+
+            CheckBlock(blockid, blocdesc);
+
+            UIBlock block = blocks[blockid];
+
+            block.UpdateInfo(blockid, blocdesc);
+
+            block.AddColorGroup(groupid, colorgroupdesc, group);
         }
 
 

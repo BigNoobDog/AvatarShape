@@ -13,7 +13,7 @@ namespace ShapingUI
         // Start is called before the first frame update
         override protected void Start()
         {
-            OnClickFaceButton();
+            
         }
 
         // Update is called once per frame
@@ -31,6 +31,8 @@ namespace ShapingUI
             SetupHairUI();
             SetupClothUI();
             SetupMakeupUI();
+
+            OnClickFaceButton();
         }
         
         private void SetupUIElements()
@@ -78,7 +80,25 @@ namespace ShapingUI
                 FaceScroller = temobj.AddComponent<ScrollerController>();
                 FaceScroller.name = "FaceScroller";
                 FaceScroller.gameObject.SetActive(true);    
-                FaceScroller.Setup(BlockItemPrototype);
+                FaceScroller.Setup(TYPE.FACE, BlockItemPrototype);
+            }
+
+            temobj = GameObject.Find("BodyScroller");
+            if (temobj != null)
+            {
+                BodyScroller = temobj.AddComponent<ScrollerController>();
+                BodyScroller.name = "BodyScroller";
+                BodyScroller.gameObject.SetActive(true);
+                BodyScroller.Setup(TYPE.BODY, BlockItemPrototype);
+            }
+
+            temobj = GameObject.Find("MakeupScroller");
+            if (temobj != null)
+            {
+                MakeupScroller = temobj.AddComponent<ScrollerController>();
+                MakeupScroller.name = "MakeupScroller";
+                MakeupScroller.gameObject.SetActive(true);
+                MakeupScroller.Setup(TYPE.MAKEUP, BlockItemPrototype);
             }
         }
 
@@ -121,7 +141,64 @@ namespace ShapingUI
 
         private void SetupMakeupUI()
         {
+            List<ShapingImageConfig> ImageConig = core.GetMakeupImageConfig();
 
+            int SliderID = 0;
+            int ColorGroupID = 0;
+            //int ImageGroupID = 0;
+
+            for (int i = 0; i < ImageConig.Count; i++)
+            {
+                ShapingImageConfig config = ImageConig[i];
+                if(config.Slider1Desc != null && config.Slider1Desc != "" && config.Slider1Desc != "None")
+                {
+                    ShapingUIEditorSlider configitem = new ShapingUIEditorSlider();
+                    configitem.firstlevel = config.FirstLevelIndex;
+                    configitem.thirdlevel = 0;
+                    configitem.firstlevelDesc = config.FirstLevelDesc;
+                    configitem.thirdlevelDesc = config.Slider1Desc;
+                    configitem.index = SliderID;
+                    MakeupScroller.AddGroupSliderItem(configitem);
+                    SliderID++;
+                }
+
+                if (config.Slider2Desc != null && config.Slider2Desc != "" && config.Slider2Desc != "None")
+                {
+                    ShapingUIEditorSlider configitem = new ShapingUIEditorSlider();
+                    configitem.firstlevel = config.FirstLevelIndex;
+                    configitem.thirdlevel = 1;
+                    configitem.firstlevelDesc = config.FirstLevelDesc;
+                    configitem.thirdlevelDesc = config.Slider1Desc;
+                    configitem.index = SliderID;
+                    MakeupScroller.AddGroupSliderItem(configitem);
+                    SliderID++;
+                }
+
+                if (config.Slider3Desc != null && config.Slider3Desc != "" && config.Slider3Desc != "None")
+                {
+                    ShapingUIEditorSlider configitem = new ShapingUIEditorSlider();
+                    configitem.firstlevel = config.FirstLevelIndex;
+                    configitem.thirdlevel = 2;
+                    configitem.firstlevelDesc = config.FirstLevelDesc;
+                    configitem.thirdlevelDesc = config.Slider1Desc;
+                    configitem.index = SliderID;
+                    MakeupScroller.AddGroupSliderItem(configitem);
+                    SliderID++;
+                }
+
+                if(config.ColorDesc != null && config.ColorDesc != "" && config.ColorDesc != "None")
+                {
+                    int colortableindex = config.ColorIndex;
+                    List<ShapingColorTableItem> group = core.GetColorGroup(colortableindex);
+
+                    MakeupScroller.AddColorGroup(config.FirstLevelIndex, ColorGroupID,  config.FirstLevelDesc, config.ColorDesc, group);
+                    ColorGroupID++;
+                }
+
+                
+            }
+
+            MakeupScroller.UpdateBlocksSize();
         }
 
         public void OnClickFaceButton()
@@ -189,23 +266,23 @@ namespace ShapingUI
 
 
         //--------------UI Elements
-        Button FaceB;
-        Button BodyB;
-        Button HairB;
-        Button ClothB;
-        Button MakeupB;
+        private Button FaceB;
+        private Button BodyB;
+        private Button HairB;
+        private Button ClothB;
+        private Button MakeupB;
 
-        GameObject FacePanel;
-        GameObject BodyPanel;
-        GameObject HairPanel;
-        GameObject MakeupPanel;
-        GameObject ClothPanel;
+        private GameObject FacePanel;
+        private GameObject BodyPanel;
+        private GameObject HairPanel;
+        private GameObject MakeupPanel;
+        private GameObject ClothPanel;
 
-        ScrollerController FaceScroller;
-        ScrollerController BodyScroller;
-        ScrollerController HairScroller;
-        ScrollerController ClothScroller;
-        ScrollerController MakeupScroller;
+        private ScrollerController FaceScroller;
+        private ScrollerController BodyScroller;
+        private ScrollerController HairScroller;
+        private ScrollerController ClothScroller;
+        private ScrollerController MakeupScroller;
 
         public RectTransform BlockItemPrototype;
 

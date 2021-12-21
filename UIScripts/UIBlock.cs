@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Linq;
+using ShapingController;
 
 namespace ShapingUI
 {
@@ -13,8 +14,6 @@ namespace ShapingUI
         {
 
             sliders = new List<SliderItem>();
-            images = new List<ImageItem>();
-            colors = new List<ColorItem>();
         }
 
         // Start is called before the first frame update
@@ -25,8 +24,9 @@ namespace ShapingUI
 
         //Public Function
 
-        public void Setup()
+        public void Setup(TYPE typevalue)
         {
+            type = typevalue;
             Text[] items = gameObject.GetComponentsInChildren<Text>();
             foreach(Text item in items)
             {
@@ -58,7 +58,7 @@ namespace ShapingUI
             Desc.text = desc;
         }
 
-        public void AddSliderItem(int index, string desc)
+        public void AddSliderItem(int sliderindex, string desc)
         {
             RectTransform newslider = GameObject.Instantiate(SliderItemPrototype);
             newslider.name = desc;
@@ -75,7 +75,29 @@ namespace ShapingUI
             newslider.sizeDelta = presizeD;
 
             item.gameObject.SetActive(true);
-            item.UpdateInfo(index, desc);
+            item.UpdateInfo(type, sliderindex, desc);
+            item.UpdateItem();
+            sliders.Add(item);
+        }
+
+        public void AddGroupSliderItem(int sliderindex, string desc)
+        {
+            RectTransform newslider = GameObject.Instantiate(SliderItemPrototype);
+            newslider.name = desc;
+            SliderItem item = newslider.GetComponent<SliderItem>();
+
+            Vector2 presizeD = newslider.sizeDelta;
+            //Vector2 prePos = newslider.anchoredPosition;
+            presizeD.y += UISize.sliderheight;
+
+            newslider.SetParent(Content.transform);
+
+
+            newslider.anchoredPosition = new Vector2(0.0f, 0.0f);
+            newslider.sizeDelta = presizeD;
+
+            item.gameObject.SetActive(true);
+            item.UpdateInfo(type, sliderindex, desc);
             item.UpdateItem();
             sliders.Add(item);
         }
@@ -85,9 +107,29 @@ namespace ShapingUI
 
         }
 
-        public void AddColorGroup()
+        public void AddColorGroup(int groupid, string desc, List<ShapingColorTableItem> group)
         {
+            RectTransform newcolorgroup = GameObject.Instantiate(ColorGroupPrototype);
+            
 
+            newcolorgroup.name = desc;
+            ColorGroup item = newcolorgroup.GetComponentInChildren<ColorGroup>();
+
+            Vector2 presizeD = newcolorgroup.sizeDelta;
+            //Vector2 prePos = newslider.anchoredPosition;
+            presizeD.y += UISize.imagewidth * (group.Count / UISize.imagenumperrow) + 2 * UISize.imagemarginwidth;
+
+            newcolorgroup.SetParent(Content.transform);
+
+
+            newcolorgroup.anchoredPosition = new Vector2(0.0f, 0.0f);
+            newcolorgroup.sizeDelta = presizeD;
+
+            
+            item.gameObject.SetActive(true);
+            item.Setup(type, groupid, desc, group, ColorItemPrototype);
+            //item.UpdateSize();
+            colorgroup = item;
         }
 
         public void SetUI(RectTransform ui)
@@ -95,23 +137,44 @@ namespace ShapingUI
 
         }
 
+        //Set the Inner items' position
         public void UpdateSize()
         {
-            float sliderswidth = UISize.sliderheight * sliders.Count;
+            height = 0;
+
+            //First: Settle the Image Group
+            float imagegroupwidth = 0.0f;
+            height += imagegroupwidth;
+
+            //Second:Settle the Color Group
+            if(colorgroup != null)
+            {
+                float colorgroupwidth = colorgroup.GetHeight();
+                colorgroup.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -height);
+                height += colorgroupwidth;
+            }
+
+            //Third: Settle the Slider Group
+
+
             for(int i = 0; i < sliders.Count; i ++)
             {
                 RectTransform srt = sliders[i].gameObject.GetComponent<RectTransform>();
+
                 Vector2 pos = srt.anchoredPosition;
-                pos.y = - i * UISize.sliderheight;
+                pos.y = - i * UISize.sliderheight - height;
+                srt.anchoredPosition = pos;
+
                 Vector2 sd = srt.sizeDelta;
                 sd.y = UISize.sliderheight;
-                srt.anchoredPosition = pos;
                 srt.sizeDelta = sd;
             }
 
+            float sliderswidth = UISize.sliderheight * sliders.Count;
+            height += sliderswidth;
             RectTransform brt = gameObject.GetComponent<RectTransform>();
             Vector2 blockSD = brt.sizeDelta;
-            blockSD.y = sliderswidth;
+            blockSD.y = height;
             brt.sizeDelta = blockSD;
         }
 
@@ -123,7 +186,7 @@ namespace ShapingUI
             tmp_v2.y = startY;
             brt.anchoredPosition = tmp_v2;
 
-            return pos - sliders.Count * UISize.sliderheight;
+            return pos - height;
         }
 
         //Base Function
@@ -137,14 +200,19 @@ namespace ShapingUI
         int index;
         Text Desc;
         GameObject Content;
+        private TYPE type;
 
         public RectTransform SliderItemPrototype;
         public RectTransform ImageItemPrototype;
         public RectTransform ColorItemPrototype;
+        public RectTransform ColorGroupPrototype;
+        public RectTransform ImageGroupPrototype;
 
         List<SliderItem> sliders;
-        List<ImageItem> images;
-        List<ColorItem> colors;
+        //List<ImageGroup> images;
+        //List<ColorGroup> colors;
+        ImageGroup imagegroup;
+        ColorGroup colorgroup;
 
         float width;
         float height;

@@ -30,12 +30,13 @@ namespace ShapingController
 
     public enum PART
     {
-        HEAD = 0,
-        BODY = 1,
-        UPPERCLOTH = 2,
-        DOWNCLOTH = 3,
-        SHOE = 4,
-        HAIR = 5,
+        HEAD         = 0,
+        BODY         = 1,
+        UPPERCLOTH   = 2,
+        DOWNCLOTH    = 3,
+        SHOE         = 4,
+        HAIR         = 5,
+        EYE          = 6,
         PART_NUM
     }
 
@@ -195,6 +196,8 @@ namespace ShapingController
                 return "FACE";
             else if (type == TYPE.BODY)
                 return "BODY";
+            else if (type == TYPE.MAKEUP)
+                return "MAKEUP";
             else
                 return "Undefined";
         }
@@ -209,8 +212,8 @@ namespace ShapingController
         public static string DefaultImportFile = "Face1.dat";
         public static string DefaultExportFile = "FaceCustomed1.dat";
 
-        public static string DefaultTextureTable = "TextureTable.csv";
-        public static string DefaultColorTable = "ColorTable.csv";
+        public static string DefaultTextureTable = "Texture.csv";
+        public static string DefaultColorTable = "Color.csv";
     }
 
 }
