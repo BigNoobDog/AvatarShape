@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.88461196, g: 0.9403793, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -142,10 +142,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SliderItemPrototype: {fileID: 5730975380191656385, guid: 56f0690d3a7750747b887c7202986088, type: 3}
-  ImageItemPrototype: {fileID: 3339714533795599424, guid: 1db54bd19c454f54498e1483b9079171, type: 3}
+  ImageItemPrototype: {fileID: 3339714533795599424, guid: 6ca910179a8f35d448d7c6bb55db9c5c, type: 3}
   ColorItemPrototype: {fileID: 3339714533795599424, guid: 1db54bd19c454f54498e1483b9079171, type: 3}
   ColorGroupPrototype: {fileID: 5730975380191656385, guid: b4775dfadfb684f439389d3bae7245b6, type: 3}
   ImageGroupPrototype: {fileID: 5730975380191656385, guid: 0c494a24d428fab488b07ec992011a0a, type: 3}

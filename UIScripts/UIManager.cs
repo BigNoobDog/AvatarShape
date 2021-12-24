@@ -127,6 +127,24 @@ namespace ShapingUI
 
         private void SetupBodyUI()
         {
+            List<ShapingSkeletonTransConfig> sliderconfigs = core.GetBodySliderConfig();
+
+            for (int i = 0; i < sliderconfigs.Count; i++)
+            {
+                ShapingSkeletonTransConfig config = sliderconfigs[i];
+                ShapingUIEditorSlider configitem = new ShapingUIEditorSlider();
+
+                configitem.type = TYPE.FACE;
+                configitem.index = config.index;
+                configitem.firstlevelDesc = config.FirstLevelDesc;
+                configitem.firstlevel = config.FirstLevel;
+                configitem.thirdlevel = config.ThirdLevel;
+                configitem.thirdlevelDesc = config.ThirdLevelDesc;
+
+                BodyScroller.AddSliderItem(configitem);
+            }
+
+            BodyScroller.UpdateBlocksSize();
 
         }
         private void SetupHairUI()
@@ -145,7 +163,7 @@ namespace ShapingUI
 
             int SliderID = 0;
             int ColorGroupID = 0;
-            //int ImageGroupID = 0;
+            int ImageGroupID = 0;
 
             for (int i = 0; i < ImageConig.Count; i++)
             {
@@ -195,6 +213,17 @@ namespace ShapingUI
                     ColorGroupID++;
                 }
 
+                
+                if (config.TextureDesc != null && config.TextureDesc != "" && config.TextureDesc != "None")
+                {
+                    int colortableindex = config.TextureIndex;
+                    List<ShapingTextureTableItem> group = core.GetTextureGroup(colortableindex);
+
+                    // MakeupScroller.AddColorGroup(config.FirstLevelIndex, ColorGroupID, config.FirstLevelDesc, config.ColorDesc, group);
+                    MakeupScroller.AddTextureGroup(config.FirstLevelIndex, ImageGroupID, config.FirstLevelDesc, config.TextureDesc, group);
+
+                    ImageGroupID++;
+                }
                 
             }
 

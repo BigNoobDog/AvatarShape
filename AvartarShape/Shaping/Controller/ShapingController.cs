@@ -148,7 +148,7 @@ namespace ShapingController
                     }
 
                     int length = aryLine.Length;
-                    if (length != columnCount || length < 5)
+                    if (length != columnCount || length < 4)
                     {
                         continue;
                     }
@@ -433,18 +433,25 @@ namespace ShapingController
             return ColorTable[tableindex];
         }
 
+        public List<ShapingTextureTableItem> GetTextureGroup(int tableindex)
+        {
+            return TextureTable[tableindex];
+        }
+
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(TYPE type, int index, float value)
         {
             List<ShapingSkeletonTrans> trans;
 
-            if(type == TYPE.FACE)
+            if (type == TYPE.FACE)
             {
                 trans = face.SetOneBoneSliderValue(index, value);
             }
-            else
+            else if (type == TYPE.BODY)
             {
-                trans = null;
+                trans = body.SetOneBoneSliderValue(index, value);
             }
+            else
+                trans = null;
 
             return trans;
         }
@@ -461,6 +468,19 @@ namespace ShapingController
                 return null;
             }
             
+        }
+
+        public ShapingMaterialTextureItem GetMaterialImageConfigItem(TYPE type, int itemindex)
+        {
+            if (type == TYPE.MAKEUP)
+            {
+                return makeup.GetTextureConfigItem(itemindex);
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         public ShapingMaterialScalaItem GetMaterialScalaConfigItem(TYPE type, int itemindex)

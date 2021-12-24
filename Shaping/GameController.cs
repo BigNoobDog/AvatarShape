@@ -6,6 +6,7 @@ using ShapingUI;
 using ShapingController;
 using ShapingPlayer;
 
+
 public class GameController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -32,6 +33,12 @@ public class GameController : MonoBehaviour
 
         UIEventManager.BindPlayer(player);
         UIEventManager.Init();
+
+        cameraMan = gameObject.AddComponent<CameraController>();
+        characterPresentMan = gameObject.AddComponent<CharacterPresentController>();
+        characterPresentMan.Setup(PlayerObject);
+
+
     }
 
     // Update is called once per frame
@@ -52,5 +59,8 @@ public class GameController : MonoBehaviour
     private ShapingControllerCore controller;
     UIManager UIMan;
     public GameObject PlayerObject;
+
+    CameraController cameraMan;
+    CharacterPresentController characterPresentMan;
     Player player;
 }

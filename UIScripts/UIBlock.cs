@@ -102,9 +102,28 @@ namespace ShapingUI
             sliders.Add(item);
         }
 
-        public void AddImageGroup()
+        public void AddImageGroup(int groupid, string desc, List<ShapingTextureTableItem> group)
         {
+            RectTransform newimagegroup = GameObject.Instantiate(ImageGroupPrototype);
 
+            newimagegroup.name = desc;
+            ImageGroup item = newimagegroup.GetComponentInChildren<ImageGroup>();
+
+            Vector2 presizeD = newimagegroup.sizeDelta;
+            //Vector2 prePos = newslider.anchoredPosition;
+            presizeD.y += UISize.imagewidth * (group.Count / UISize.imagenumperrow) + 2 * UISize.imagemarginwidth;
+
+            newimagegroup.SetParent(Content.transform);
+
+
+            newimagegroup.anchoredPosition = new Vector2(0.0f, 0.0f);
+            newimagegroup.sizeDelta = presizeD;
+
+
+            item.gameObject.SetActive(true);
+            item.Setup(type, groupid, desc, group, ImageItemPrototype);
+            //item.UpdateSize();
+            imagegroup = item;
         }
 
         public void AddColorGroup(int groupid, string desc, List<ShapingColorTableItem> group)
@@ -144,6 +163,11 @@ namespace ShapingUI
 
             //First: Settle the Image Group
             float imagegroupwidth = 0.0f;
+            if (imagegroup != null)
+            {
+                imagegroupwidth = imagegroup.GetHeight();
+                imagegroup.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -height);
+            }
             height += imagegroupwidth;
 
             //Second:Settle the Color Group

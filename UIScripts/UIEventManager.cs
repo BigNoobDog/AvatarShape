@@ -10,6 +10,7 @@ namespace ShapingUI
 {
     public class OnSliderValueChange : UnityEngine.Events.UnityEvent<TYPE, int, float> { }
     public class OnColorItemChange : UnityEngine.Events.UnityEvent<TYPE, int, Color> { }
+    public class OnImageItemChange : UnityEngine.Events.UnityEvent<TYPE, int, string> { }
     static public class UIEventManager
     {
         static public void Init()
@@ -18,6 +19,7 @@ namespace ShapingUI
             {
                 onUpdateSliderValue.AddListener(player.GetSliderEventHandle());
                 onUpdateColorValue.AddListener(player.GetColorEventHandle());
+                onUpdateImageValue.AddListener(player.GetImageEventHandle());
             }
                 
         }
@@ -27,6 +29,8 @@ namespace ShapingUI
         static public OnSliderValueChange onUpdateSliderValue = new OnSliderValueChange();
 
         static public OnColorItemChange onUpdateColorValue = new OnColorItemChange();
+
+        static public OnImageItemChange onUpdateImageValue = new OnImageItemChange();
 
 
         static public void BindPlayer(Player p)

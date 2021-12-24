@@ -227,6 +227,13 @@ namespace ShapingController
         {
             return Config;
         }
+        public ShapingMaterialTextureItem GetTextureConfigItem(int itemindex)
+        {
+            if (itemindex < textures.Count)
+                return textures[itemindex];
+            else
+                return null;
+        }
 
         public ShapingMaterialColorItem GetColorConfigItem(int itemindex)
         {

@@ -76,6 +76,13 @@ namespace ShapingPlayer
         }
 
 
+        public UnityEngine.Events.UnityAction<TYPE, int, string> GetImageEventHandle()
+        {
+            return MatMan.OnImageValueChangedFromUI;
+        }
+
+
+
         public void OnSliderValueChangeFromUI(TYPE type, int index, float value)
         {
             if(type == TYPE.FACE || type == TYPE.BODY)

@@ -117,6 +117,19 @@ namespace ShapingUI
         }
 
 
+        public void AddTextureGroup(int blockid, int groupid, string blocdesc, string texturegroupdesc, List<ShapingTextureTableItem> group)
+        {
+
+            CheckBlock(blockid, blocdesc);
+
+            UIBlock block = blocks[blockid];
+
+            block.UpdateInfo(blockid, blocdesc);
+
+            block.AddImageGroup(groupid, texturegroupdesc, group);
+        }
+
+
         public void UpdateBlocksSize()
         {
             for(int i = 0; i < blocks.Count; i ++)

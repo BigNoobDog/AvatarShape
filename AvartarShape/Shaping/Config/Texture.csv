@@ -1,7 +1,7 @@
 Index,TextureTableID,Path,ThumbPath
-0,0,xx,xx
-1,0,xx,xx
-2,1,xx,xx
+0,0,Textures/null,null
+1,0,Textures/angle1,angle1
+2,0,Textures/angle2,angle2
 3,1,xx,xx
 4,1,xx,xx
 5,1,xx,xx

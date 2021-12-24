@@ -79,6 +79,27 @@ namespace ShapingPlayer
         }
 
 
+        public void OnImageValueChangedFromUI(TYPE type, int index, string path)
+        {
+            string logstr = GlobalFunAndVar.TYPE2Str(type) + " " + index.ToString() + " " + path;
+            Debug.Log(logstr);
+
+            ShapingMaterialTextureItem configitem = controller.GetMaterialImageConfigItem(type, index);
+
+            Texture t = Resources.Load<Texture>(path);
+            if (t == null)
+                return;
+
+            if (configitem.part == PART.HEAD)
+            {
+                FaceMaterial.SetTexture(configitem.name, t);
+            }
+            else if (configitem.part == PART.EYE)
+            {
+                EyeMaterial.SetTexture(configitem.name, t);
+            }
+        }
+
         public void OnSliderValueChangeFromUI(TYPE type, int index, float value)
         {
             string logstr = GlobalFunAndVar.TYPE2Str(type) + " " + index.ToString() + " " + value.ToString();
