@@ -78,7 +78,7 @@ namespace ShapingUI
 
         public void OnButtonClicked()
         {
-            UIEventManager.onUpdateImageValue.Invoke(type, groupindex, texturepath);
+            UIEventManager.onUpdateImageValue.Invoke(type, groupindex, itemindex, texturepath);
             onUpdateImageStateValue.Invoke(groupindex, itemindex);
         }
 

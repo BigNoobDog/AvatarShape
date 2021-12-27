@@ -43,6 +43,9 @@ namespace ShapingUI
             ClothB = GameObject.Find("ClothB").GetComponent<Button>();
             MakeupB = GameObject.Find("MakeupB").GetComponent<Button>();
 
+            Import = GameObject.Find("Btn_Import").GetComponent<Button>();
+            Export = GameObject.Find("Btn_Export").GetComponent<Button>();
+
             FacePanel = GameObject.Find("FacePanel");
             BodyPanel = GameObject.Find("BodyPanel");
             HairPanel = GameObject.Find("HairPanel");
@@ -73,6 +76,17 @@ namespace ShapingUI
             {
                 MakeupB.onClick.AddListener(OnClickMakeupButton);
             }
+
+            if (Import != null)
+            {
+                Import.onClick.AddListener(OnClickImport);
+            }
+            if (Export != null)
+            {
+                Export.onClick.AddListener(OnClickExport);
+            }
+
+
 
             GameObject temobj = GameObject.Find("FaceScroller");
             if(temobj != null)
@@ -277,15 +291,25 @@ namespace ShapingUI
             core = c;
         }
 
+        public void OnClickImport()
+        {
+            ImportData();
+        }
+
+        public void OnClickExport()
+        {
+            ExportData();
+        }
 
         public void ImportData()
         {
-            core.ImportData();
+            
+            UIEventManager.OnImportEvent.Invoke("Assets\\AvartarShape\\Shaping\\Config\\aa.dat");
         }
 
         public void ExportData()
         {
-            core.ExportData();
+            UIEventManager.OnExportEvent.Invoke("Assets\\AvartarShape\\Shaping\\Config\\aa.dat");
         }
 
         //--------------Public Variable
@@ -300,6 +324,9 @@ namespace ShapingUI
         private Button HairB;
         private Button ClothB;
         private Button MakeupB;
+
+        private Button Import;
+        private Button Export;
 
         private GameObject FacePanel;
         private GameObject BodyPanel;

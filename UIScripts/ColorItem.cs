@@ -57,7 +57,7 @@ namespace ShapingUI
 
         public void OnButtonClicked()
         {
-            UIEventManager.onUpdateColorValue.Invoke(type, groupindex, color);
+            UIEventManager.onUpdateColorValue.Invoke(type, groupindex, itemindex, color);
             onUpdateColorStateValue.Invoke(groupindex, itemindex);
         }
 

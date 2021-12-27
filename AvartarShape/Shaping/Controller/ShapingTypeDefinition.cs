@@ -142,7 +142,7 @@ namespace ShapingController
     {
         public List<ShapingSkeletonTrans> FaceBones;
 
-        public Dictionary<string, ShapingSkeletonTrans> BodyBones;
+        public List<ShapingSkeletonTrans> BodyBones;
 
         public Dictionary<PART, List<ShapingMaterialTextureParam>> TextureParams;
 

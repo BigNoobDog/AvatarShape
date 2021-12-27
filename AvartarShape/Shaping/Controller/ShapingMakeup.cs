@@ -18,6 +18,10 @@ namespace ShapingController
 
             ColorTable = new Dictionary<int, List<ShapingColorTableItem>>();
             TextureTable = new Dictionary<int, List<ShapingTextureTableItem>>();
+
+            TextureParams = new Dictionary<PART, List<ShapingMaterialTextureParam>>();
+            VectorParams = new Dictionary<PART, List<ShapingMaterialVectorParam>>();
+            ScalaParams = new Dictionary<PART, List<ShapingMaterialScalaParam>>();
         }
 
         public void LoadConfig(string config)
@@ -220,8 +224,44 @@ namespace ShapingController
                     scalas.Add(item);
                 }
             }
+
+            for(int i = 0; i < textures.Count; i ++)
+            {
+                TextureDatas.Add(0);
+            }
+
+            for(int i = 0; i < colors.Count; i ++)
+            {
+                ColorDatas.Add(0);
+            }
+            for(int i = 0; i < scalas.Count; i ++)
+            {
+                SliderDatas.Add(0);
+            }
+
         }
 
+        public void SetOneSliderValue(TYPE type, int valueindex, float value)
+        {
+            SliderDatas[valueindex] = value;
+
+
+            if (valueindex < scalas.Count)
+            {
+                ShapingMaterialScalaItem titem = scalas[valueindex];
+                float limit = titem.limit;
+
+                ShapingMaterialScalaParam param = new ShapingMaterialScalaParam();
+                param.ParamName = titem.name;
+                param.Value = (value - 0.5f) * limit;
+
+                if (!ScalaParams.ContainsKey(titem.part))
+                {
+                    ScalaParams[titem.part] = new List<ShapingMaterialScalaParam>();
+                }
+                ScalaParams[titem.part].Add(param);
+            }
+        }
 
         public List<ShapingImageConfig> GetImageConfig()
         {
@@ -233,6 +273,58 @@ namespace ShapingController
                 return textures[itemindex];
             else
                 return null;
+        }
+
+        public void SetMaterialImageParam(int valueindex, int value)
+        {
+            if(valueindex < TextureDatas.Count)
+                TextureDatas[valueindex] = value;
+
+            if(valueindex < textures.Count)
+            {
+                ShapingMaterialTextureItem titem = textures[valueindex];
+                string path = TextureTable[titem.TableIndex][value].Path;
+
+                ShapingMaterialTextureParam param = new ShapingMaterialTextureParam();
+                param.ParamName = titem.name;
+                param.Value = path;
+
+                if(!TextureParams.ContainsKey(titem.part))
+                {
+                    TextureParams[titem.part] = new List<ShapingMaterialTextureParam>();
+                }
+                TextureParams[titem.part].Add(param);
+            }
+        }
+
+        public void SetMaterialScalaParam(int valueindex, float value)
+        {
+            if(valueindex < SliderDatas.Count)
+                SliderDatas[valueindex] = value;
+        }
+
+        public void SetMaterialVectorParam(int valueindex, int value)
+        {
+            if (valueindex < ColorDatas.Count)
+                ColorDatas[valueindex] = value;
+
+            if (valueindex < colors.Count)
+            {
+                ShapingMaterialColorItem titem = colors[valueindex];
+                ShapingColorTableItem ColorValue = ColorTable[titem.TableIndex][value];
+
+                ShapingMaterialVectorParam param = new ShapingMaterialVectorParam();
+                param.ParamName = titem.name;
+                param.r = ColorValue.R;
+                param.g = ColorValue.G;
+                param.b = ColorValue.B;
+
+                if (!VectorParams.ContainsKey(titem.part))
+                {
+                    VectorParams[titem.part] = new List<ShapingMaterialVectorParam>();
+                }
+                VectorParams[titem.part].Add(param);
+            }
         }
 
         public ShapingMaterialColorItem GetColorConfigItem(int itemindex)
@@ -258,8 +350,12 @@ namespace ShapingController
             SliderDatas = sliders;
         }
 
-        public bool ApplyData(ShapingUsableData UsableData)
+        public bool ApplyData()
         {
+            TextureParams.Clear();
+            VectorParams.Clear();
+            ScalaParams.Clear();
+
             //Texture Usable Data
             for(int i = 0; i < TextureDatas.Count; i ++)
             {
@@ -274,12 +370,12 @@ namespace ShapingController
                 newparam.Value = texturetableitem[value].Path;
 
                 PART part = configitem.part;
-                if(!UsableData.TextureParams.ContainsKey(part))
+                if(!TextureParams.ContainsKey(part))
                 {
-                    UsableData.TextureParams[part] = new List<ShapingMaterialTextureParam>();
+                    TextureParams[part] = new List<ShapingMaterialTextureParam>();
                 }
 
-                UsableData.TextureParams[part].Add(newparam);
+                TextureParams[part].Add(newparam);
             }
 
             //Color Usable Data
@@ -298,12 +394,12 @@ namespace ShapingController
                 newparam.b = colortableitem[value].B_f;
 
                 PART part = configitem.part;
-                if (!UsableData.VectorParams.ContainsKey(part))
+                if (!VectorParams.ContainsKey(part))
                 {
-                    UsableData.VectorParams[part] = new List<ShapingMaterialVectorParam>();
+                    VectorParams[part] = new List<ShapingMaterialVectorParam>();
                 }
 
-                UsableData.VectorParams[part].Add(newparam);
+                VectorParams[part].Add(newparam);
             }
 
             //Scala Usable Data
@@ -316,12 +412,12 @@ namespace ShapingController
                 newparam.Value = GlobalFunAndVar.GetCalculatedValue(value, configitem.limit);
 
                 PART part = configitem.part;
-                if (!UsableData.ScalaParams.ContainsKey(part))
+                if (!ScalaParams.ContainsKey(part))
                 {
-                    UsableData.ScalaParams[part] = new List<ShapingMaterialScalaParam>();
+                    ScalaParams[part] = new List<ShapingMaterialScalaParam>();
                 }
 
-                UsableData.ScalaParams[part].Add(newparam);
+                ScalaParams[part].Add(newparam);
             }
 
             return true;
@@ -341,7 +437,7 @@ namespace ShapingController
 
             length = ColorDatas.Count;
 
-            ret += length.ToString();
+            ret += " " + length.ToString();
 
             for (int i = 0; i < length; i++)
             {
@@ -350,7 +446,7 @@ namespace ShapingController
 
             length = SliderDatas.Count;
 
-            ret += length.ToString();
+            ret += " " + length.ToString();
 
             for (int i = 0; i < length; i++)
             {
@@ -358,6 +454,22 @@ namespace ShapingController
             }
 
             return ret;
+        }
+
+        //Base Function
+        public Dictionary<PART, List<ShapingMaterialTextureParam>> GetUsableTextureParams()
+        {
+            return TextureParams;
+        }
+
+        public Dictionary<PART, List<ShapingMaterialVectorParam>> GetUsableVectorParams()
+        {
+            return VectorParams;
+        }
+
+        public Dictionary<PART, List<ShapingMaterialScalaParam>> GetUsableScalaParams()
+        {
+            return ScalaParams;
         }
 
         private List<ShapingImageConfig> Config;
@@ -370,5 +482,9 @@ namespace ShapingController
 
         private Dictionary<int, List<ShapingColorTableItem>> ColorTable;
         private Dictionary<int, List<ShapingTextureTableItem>> TextureTable;
+
+        private Dictionary<PART, List<ShapingMaterialTextureParam>> TextureParams;
+        private Dictionary<PART, List<ShapingMaterialScalaParam>> ScalaParams;
+        private Dictionary<PART, List<ShapingMaterialVectorParam>> VectorParams;
     }
 }

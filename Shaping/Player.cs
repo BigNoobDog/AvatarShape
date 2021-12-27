@@ -50,14 +50,26 @@ namespace ShapingPlayer
         }
 
 
-        public void ImportData()
+        public void ImportData(string filepath)
         {
-            controller.ImportData();
+            controller.ImportData(filepath);
+            controller.ApplyData();
+            ApplyData(controller.GetUsableData());
         }
 
-        public void ExportData()
+        public void ApplyData(ShapingUsableData data)
         {
-            controller.ExportData();
+            SkeMan.SetScalaParams(data.FaceBones);
+            SkeMan.SetScalaParams(data.BodyBones);
+
+            MatMan.SetScalaParams(data.ScalaParams);
+            MatMan.SetVectorParams(data.VectorParams);
+            MatMan.SetTextureParams(data.TextureParams);
+        }
+
+        public void ExportData(string filepath)
+        {
+            controller.ExportData(filepath);
         }
 
         public void SetShapingController(ShapingControllerCore core)
@@ -70,18 +82,16 @@ namespace ShapingPlayer
             return OnSliderValueChangeFromUI;
         }
 
-        public UnityEngine.Events.UnityAction<TYPE, int, Color> GetColorEventHandle()
+        public UnityEngine.Events.UnityAction<TYPE, int, int, Color> GetColorEventHandle()
         {
             return MatMan.OnColorValueChangedFromUI;
         }
 
 
-        public UnityEngine.Events.UnityAction<TYPE, int, string> GetImageEventHandle()
+        public UnityEngine.Events.UnityAction<TYPE, int, int, string> GetImageEventHandle()
         {
             return MatMan.OnImageValueChangedFromUI;
         }
-
-
 
         public void OnSliderValueChangeFromUI(TYPE type, int index, float value)
         {

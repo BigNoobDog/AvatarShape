@@ -23,7 +23,6 @@ namespace ShapingController
         private Dictionary<int, List<ShapingColorTableItem>> ColorTable;
         private Dictionary<int, List<ShapingTextureTableItem>> TextureTable;
 
-        private ShapingUsableData UsableData;
 
         public void Init()
         {
@@ -197,137 +196,84 @@ namespace ShapingController
             int length = lines.Length;
 
             //Model Index
-            if(0 < length)
+            if (0 >= length)
             {
-                try
-                {
-                    ModelIndex = int.Parse(lines[0]);
-                }
-                catch
-                {
-
-                }
+                return false;
             }
+
+            
+
+            string[] num_strs = lines[0].Split(' ');
+
+            if (num_strs.Length <= 0)
+            {
+                return false;
+            }
+
+            int iter = 0;
 
             //Face
-            if(1 < length)
+            int num_length = int.Parse(num_strs[iter++]);
+
+            List<float> tmp_arr = new List<float>();
+            for (int j = 0; j < num_length; j++)
             {
-                string[] num_strs = lines[1].Split(' ');
-
-                if(num_strs.Length > 0)
-                {
-                    int num_length = int.Parse(num_strs[0]);
-
-                    if(num_length == (num_strs.Length - 1))
-                    {
-                        List<float> tmp_arr = new List<float>();
-                        for (int j = 1; j < num_length; j ++)
-                        {
-                            tmp_arr.Add(float.Parse(num_strs[j]));
-                        }
-
-                        face.ImportData(tmp_arr);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                tmp_arr.Add(float.Parse(num_strs[iter ++]));
             }
+
+            face.ImportData(tmp_arr);
+
 
             //Body
-            if (2 < length)
+
+            num_length = int.Parse(num_strs[iter ++]);
+           
+
+            tmp_arr = new List<float>();
+            for (int j = 0; j < num_length; j++)
             {
-                string[] num_strs = lines[2].Split(' ');
-
-                if (num_strs.Length > 0)
-                {
-                    int num_length = int.Parse(num_strs[0]);
-
-                    if (num_length == (num_strs.Length - 1))
-                    {
-                        List<float> tmp_arr = new List<float>();
-                        for (int j = 1; j < num_length; j++)
-                        {
-                            tmp_arr.Add(float.Parse(num_strs[j]));
-                        }
-
-                        body.ImportData(tmp_arr);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                tmp_arr.Add(float.Parse(num_strs[iter ++]));
             }
+
+            body.ImportData(tmp_arr);
+
 
             //Hair
 
             //Makeup
-            if (6 < length)
+
+            List<int> tex_arr = new List<int>(); ;
+            List<int> col_arr = new List<int>(); ;
+            List<float> sli_arr = new List<float>(); ;
+
+            num_length = int.Parse(num_strs[iter ++]);
+
+
+            for (int j = 0; j < num_length; j++)
             {
-                List<int> tex_arr   = new List<int>(); ;
-                List<int> col_arr   = new List<int>(); ;
-                List<float> sli_arr = new List<float>(); ;
-                string[] num_strs = lines[4].Split(' ');
-
-                if (num_strs.Length > 0)
-                {
-                    int num_length = int.Parse(num_strs[0]);
-
-                    if (num_length == (num_strs.Length - 1))
-                    {
-                        for (int j = 1; j < num_length; j++)
-                        {
-                            tex_arr.Add(int.Parse(num_strs[j]));
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-
-                num_strs = lines[5].Split(' ');
-
-                if (num_strs.Length > 0)
-                {
-                    int num_length = int.Parse(num_strs[0]);
-
-                    if (num_length == (num_strs.Length - 1))
-                    {
-                        for (int j = 1; j < num_length; j++)
-                        {
-                            col_arr.Add(int.Parse(num_strs[j]));
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-
-                num_strs = lines[6].Split(' ');
-
-                if (num_strs.Length > 0)
-                {
-                    int num_length = int.Parse(num_strs[0]);
-
-                    if (num_length == (num_strs.Length - 1))
-                    {
-                        for (int j = 1; j < num_length; j++)
-                        {
-                            sli_arr.Add(float.Parse(num_strs[j]));
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-
-                makeup.ImportData(tex_arr, col_arr, sli_arr);
+                tex_arr.Add(int.Parse(num_strs[iter ++]));
             }
+
+            num_length = int.Parse(num_strs[iter ++]);
+
+            for (int j = 0; j < num_length; j++)
+            {
+                col_arr.Add(int.Parse(num_strs[iter ++]));
+            }
+
+
+
+            num_length = int.Parse(num_strs[iter ++]);
+
+            for (int j = 0; j < num_length; j++)
+            {
+                sli_arr.Add(float.Parse(num_strs[iter++]));
+            }
+
+
+
+            makeup.ImportData(tex_arr, col_arr, sli_arr);
+
 
             //Cloth
 
@@ -339,52 +285,65 @@ namespace ShapingController
         //Generate the usable data
         public bool ApplyData()
         {
-            if (UsableData == null)
-                return false;
-
             if(face != null)
             {
-                if (!face.ApplyData(UsableData))
+                if (!face.ApplyData())
                     return false;
             }
 
             if (body != null)
             {
-                if (!body.ApplyData(UsableData))
+                if (!body.ApplyData())
                     return false;
             }
 
             if (hair != null)
             {
-                if (!hair.ApplyData(UsableData))
+                if (!hair.ApplyData())
                     return false;
             }
 
             if (makeup != null)
             {
-                if (!makeup.ApplyData(UsableData))
+                if (!makeup.ApplyData())
                     return false;
             }
 
             if (cloth != null)
             {
-                if (!cloth.ApplyData(UsableData))
+                if (!cloth.ApplyData())
                     return false;
             }
 
             if (sockets != null)
             {
-                if (!sockets.ApplyData(UsableData))
+                if (!sockets.ApplyData())
                     return false;
             }
 
             return true;
         }
 
+        public ShapingUsableData GetUsableData()
+        {
+            ShapingUsableData data = new ShapingUsableData();
+            data.FaceBones = face.GetBonesUsableData();
+            data.BodyBones = body.GetBonesUsableData();
+
+            data.ScalaParams = makeup.GetUsableScalaParams();
+            data.VectorParams = makeup.GetUsableVectorParams();
+            data.TextureParams = makeup.GetUsableTextureParams();
+            //foreach(<>)
+
+            return data;
+        }
+                        
+
+
         //export the usable data to dat file
         public void ExportData(string filename)
         {
-            string filePath = filename + ".dat";
+            string filePath = filename;
             if (File.Exists(filePath))
                 File.Delete(filePath);
             
@@ -440,7 +399,7 @@ namespace ShapingController
 
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(TYPE type, int index, float value)
         {
-            List<ShapingSkeletonTrans> trans;
+            List<ShapingSkeletonTrans> trans = null;
 
             if (type == TYPE.FACE)
             {
@@ -450,8 +409,11 @@ namespace ShapingController
             {
                 trans = body.SetOneBoneSliderValue(index, value);
             }
-            else
-                trans = null;
+            else if(type == TYPE.MAKEUP)
+            {
+                makeup.SetMaterialScalaParam(index, value);
+            }
+                
 
             return trans;
         }
@@ -482,6 +444,33 @@ namespace ShapingController
             }
 
         }
+
+        public void SetMaterialImageParam(TYPE type, int valueindex, int value)
+        {
+            if (type == TYPE.MAKEUP)
+            {
+                makeup.SetMaterialImageParam(valueindex, value);
+            }
+            else
+            {
+               
+            }
+
+        }
+
+        public void SetMaterialVectorParam(TYPE type, int valueindex, int value)
+        {
+            if (type == TYPE.MAKEUP)
+            {
+                makeup.SetMaterialVectorParam(valueindex, value);
+            }
+            else
+            {
+
+            }
+
+        }
+
 
         public ShapingMaterialScalaItem GetMaterialScalaConfigItem(TYPE type, int itemindex)
         {

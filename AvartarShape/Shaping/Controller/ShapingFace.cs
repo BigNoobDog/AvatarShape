@@ -11,6 +11,7 @@ namespace ShapingController
         {
             Config = new List<ShapingSkeletonTransConfig>();
             Datas = new List<float>();
+            Bones = new List<ShapingSkeletonTrans>();
         }
 
         public void LoadConfig(string config)
@@ -68,6 +69,10 @@ namespace ShapingController
                     //1
                     int SliderID = int.Parse(aryLine[1]);
                     configitem.index = SliderID;
+                    if((SliderID + 1) > slidernum)
+                    {
+                        slidernum = SliderID + 1;
+                    }
                     //2
                     int FirLevel = int.Parse(aryLine[2]);
                     configitem.FirstLevel = FirLevel;
@@ -134,6 +139,11 @@ namespace ShapingController
 
             sr.Close();
             fs.Close();
+
+            for(int i = 0; i < slidernum; i ++)
+            {
+                Datas.Add(0.5f);
+            }
         }
 
         public void ImportData(List<float> datas)
@@ -141,20 +151,20 @@ namespace ShapingController
             Datas = datas;
         }
 
-        public bool ApplyData(ShapingUsableData UsableData)
+        public bool ApplyData()
         {
-            UsableData.FaceBones.Clear();
+            Bones.Clear();
 
             for (int i = 0; i < Datas.Count; i++)
             {
-                List<ShapingSkeletonTrans> oneDatatrans = SetOneBoneSliderValue(i, Datas[i]);
+                List<ShapingSkeletonTrans> oneDatatrans = SetOneBoneSliderValue_Internal(i, Datas[i]);
                 foreach(ShapingSkeletonTrans tran in oneDatatrans)
                 {
                     string bonename = tran.bonename;
                     int useablecontainindex = -1;
-                    for(int useableindex = 0; useableindex < UsableData.FaceBones.Count; useableindex ++)
+                    for(int useableindex = 0; useableindex < Bones.Count; useableindex ++)
                     {
-                        if(UsableData.FaceBones[useableindex].bonename == bonename)
+                        if(Bones[useableindex].bonename == bonename)
                         {
                             useablecontainindex = useableindex;
                             break;
@@ -165,15 +175,16 @@ namespace ShapingController
                     {
                         ShapingSkeletonTrans foo = new ShapingSkeletonTrans();
                         foo.bonename = bonename;
-                        UsableData.FaceBones.Add(foo);
+                        Bones.Add(foo);
+                        useablecontainindex = Bones.Count - 1;
                     }
 
-                    if(useablecontainindex >= 0 && useablecontainindex < UsableData.FaceBones.Count)
+                    if(useablecontainindex >= 0 && useablecontainindex < Bones.Count)
                     {
-                        UsableData.FaceBones[useablecontainindex].Mask |= tran.Mask;
-                        UsableData.FaceBones[useablecontainindex].Location += tran.Location;
-                        UsableData.FaceBones[useablecontainindex].Rotation += tran.Rotation;
-                        UsableData.FaceBones[useablecontainindex].Scale += tran.Scale;
+                        Bones[useablecontainindex].Mask |= tran.Mask;
+                        Bones[useablecontainindex].Location += tran.Location;
+                        Bones[useablecontainindex].Rotation += tran.Rotation;
+                        Bones[useablecontainindex].Scale += tran.Scale;
                     }
                 }
             }
@@ -194,10 +205,13 @@ namespace ShapingController
                 ret += " " + Datas[i].ToString();   
             }
 
+            ret += " ";
+
             return ret;
         }
 
         //For Editor
+        //Base Function
         public List<ShapingSkeletonTransConfig> GetSliderConfig()
         {
             return Config;
@@ -205,6 +219,90 @@ namespace ShapingController
 
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(int index, float value)
         {
+            //For Core
+            List<ShapingSkeletonTrans> tmp = new List<ShapingSkeletonTrans>();
+            tmp = SetOneBoneSliderValue_Internal(index, value);
+
+            List<ShapingSkeletonTrans> diff = DiffUsableData(tmp);
+
+            Datas[index] = value;
+            ApplyData();
+
+            return diff;
+        }
+
+
+        public List<ShapingSkeletonTrans> DiffUsableData(List<ShapingSkeletonTrans> target)
+        {
+            List<ShapingSkeletonTrans> ret = new List<ShapingSkeletonTrans>();
+
+            foreach(ShapingSkeletonTrans tran in target)
+            {
+                foreach(ShapingSkeletonTrans bone in Bones)
+                {
+                    if(bone.bonename == tran.bonename)
+                    {
+                        ShapingSkeletonTrans newtep = new ShapingSkeletonTrans();
+                        Vector3d loc = new Vector3d();
+
+                        int mask = tran.Mask;
+                        newtep.Mask |= mask;
+                        newtep.bonename = bone.bonename;
+                        if ((mask & (int)(1 << (int)BONEMASK.LOCATIONX)) != 0)
+                        {
+                            newtep.Location.x = tran.Location.x - bone.Location.x;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.LOCATIONY)) != 0)
+                        {
+                            newtep.Location.y = tran.Location.y - bone.Location.y;
+                        }
+                        if ((mask & (int)(1 << (int)BONEMASK.LOCATIONZ)) != 0)
+                        {
+                            newtep.Location.z = tran.Location.z - bone.Location.z;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.ROTATIONX)) != 0)
+                        {
+                            newtep.Rotation.x = tran.Rotation.x - bone.Rotation.x;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.ROTATIONY)) != 0)
+                        {
+                            newtep.Rotation.y = tran.Rotation.y - bone.Rotation.y;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.ROTATIONZ)) != 0)
+                        {
+                            newtep.Rotation.z = tran.Rotation.z - bone.Rotation.z;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.SCALEX)) != 0)
+                        {
+                            newtep.Scale.x = tran.Scale.x - bone.Scale.x;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.SCALEY)) != 0)
+                        {
+                            newtep.Scale.y = tran.Scale.y - bone.Scale.y;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.SCALEZ)) != 0)
+                        {
+                            newtep.Scale.z = tran.Scale.z - bone.Scale.z;
+                        }
+
+                        ret.Add(newtep);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public List<ShapingSkeletonTrans> SetOneBoneSliderValue_Internal(int index, float value)
+        {
+            //For Editor
             List<ShapingSkeletonTrans> trans = new List<ShapingSkeletonTrans>();
 
             foreach (ShapingSkeletonTransConfig configitem in Config)
@@ -230,6 +328,7 @@ namespace ShapingController
                     }
 
                     int mask = configitem.Mask;
+                    tran.Mask |= mask;
                     if ((mask & (int)(1 << (int)BONEMASK.LOCATIONX)) != 0)
                     {
                         tran.Location.x += 2.0f * (value - 0.5f) * configitem.LocationLimit;
@@ -281,9 +380,17 @@ namespace ShapingController
 
             return trans;
         }
+        public List<ShapingSkeletonTrans> GetBonesUsableData()
+        {
+            return Bones;
+        }
+
+
 
         public List<ShapingSkeletonTransConfig> Config;
         public List<float> Datas;
+        private List<ShapingSkeletonTrans> Bones;
 
+        private int slidernum = 0;
     }
 }

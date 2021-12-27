@@ -61,13 +61,13 @@ namespace ShapingPlayer
                     Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
                     Quaternion quaoffset = Quaternion.Euler(rotoffset);
 
-                    bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
-                    bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
-                    bones[key].localScale += (scaoffset - bonespretran[key].localScale);
+                    //bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
+                    //bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
+                    //bones[key].localScale += (scaoffset - bonespretran[key].localScale);
 
-                    bonespretran[key].localPosition = locoffset;
-                    bonespretran[key].rotation = quaoffset;
-                    bonespretran[key].localScale = scaoffset;
+                    bones[key].localPosition += locoffset;
+                    bones[key].rotation *= quaoffset;
+                    bones[key].localScale += scaoffset;
                 }
             }
             else if (type == TYPE.BODY)
@@ -84,18 +84,41 @@ namespace ShapingPlayer
                     Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
                     Quaternion quaoffset = Quaternion.Euler(rotoffset);
 
-                    bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
-                    bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
-                    bones[key].localScale += (scaoffset - bonespretran[key].localScale);
+                    //bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
+                    //bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
+                    //bones[key].localScale += (scaoffset - bonespretran[key].localScale);
 
-                    bonespretran[key].localPosition = locoffset;
-                    bonespretran[key].rotation = quaoffset;
-                    bonespretran[key].localScale = scaoffset;
+                    bones[key].localPosition += locoffset;
+                    bones[key].rotation *= quaoffset;
+                    bones[key].localScale += scaoffset;
                 }
             }
         }
 
+        public void SetScalaParams(List<ShapingSkeletonTrans> trans)
+        {
+            foreach(ShapingSkeletonTrans tran in trans)
+            {
+                string key = tran.bonename;
+                //int mask = tran.Mask;
+                //if(mask)
+                Vector3 locoffset = new Vector3(tran.Location.x, tran.Location.y, tran.Location.z);
+                Vector3 rotoffset = new Vector3(tran.Rotation.x, tran.Rotation.y, tran.Rotation.z);
+                Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
+                Quaternion quaoffset = Quaternion.Euler(rotoffset);
 
+                //bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
+                //bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
+                //bones[key].localScale += (scaoffset - bonespretran[key].localScale);
+
+                if(bones.ContainsKey(key) == true)
+                {
+                    bones[key].localPosition += locoffset;
+                    bones[key].rotation *= quaoffset;
+                    bones[key].localScale += scaoffset;
+                }
+            }
+        }
 
         private ShapingControllerCore controller;
         public GameObject SkeletonRoot;

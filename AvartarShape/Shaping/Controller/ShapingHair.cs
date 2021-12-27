@@ -8,7 +8,7 @@ namespace ShapingController
 
         }
 
-        public bool ApplyData(ShapingUsableData UsableData)
+        public bool ApplyData()
         {
             return true;
         }

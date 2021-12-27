@@ -9,8 +9,12 @@ using ShapingPlayer;
 namespace ShapingUI
 {
     public class OnSliderValueChange : UnityEngine.Events.UnityEvent<TYPE, int, float> { }
-    public class OnColorItemChange : UnityEngine.Events.UnityEvent<TYPE, int, Color> { }
-    public class OnImageItemChange : UnityEngine.Events.UnityEvent<TYPE, int, string> { }
+    public class OnColorItemChange : UnityEngine.Events.UnityEvent<TYPE, int, int, Color> { }
+    public class OnImageItemChange : UnityEngine.Events.UnityEvent<TYPE, int, int, string> { }
+
+    public class OnExport : UnityEngine.Events.UnityEvent<string> { }
+    public class OnImport : UnityEngine.Events.UnityEvent<string> { }
+
     static public class UIEventManager
     {
         static public void Init()
@@ -20,6 +24,8 @@ namespace ShapingUI
                 onUpdateSliderValue.AddListener(player.GetSliderEventHandle());
                 onUpdateColorValue.AddListener(player.GetColorEventHandle());
                 onUpdateImageValue.AddListener(player.GetImageEventHandle());
+                OnImportEvent.AddListener(player.ImportData);
+                OnExportEvent.AddListener(player.ExportData);
             }
                 
         }
@@ -31,6 +37,10 @@ namespace ShapingUI
         static public OnColorItemChange onUpdateColorValue = new OnColorItemChange();
 
         static public OnImageItemChange onUpdateImageValue = new OnImageItemChange();
+
+        static public OnExport OnExportEvent = new OnExport();
+
+        static public OnImport OnImportEvent = new OnImport();
 
 
         static public void BindPlayer(Player p)
