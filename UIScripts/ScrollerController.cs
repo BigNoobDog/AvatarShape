@@ -129,6 +129,17 @@ namespace ShapingUI
             block.AddImageGroup(groupid, texturegroupdesc, group);
         }
 
+        public void AddPresetTextureGroup(string texturegroupdesc, List<ShapingPresetConfigItem> group)
+        {
+
+            CheckBlock(0, UISize.PresetName);
+
+            UIBlock block = blocks[0];
+
+            block.UpdateInfo(0, texturegroupdesc);
+
+            block.AddPresetImageGroup(0, ShapingModel.MODELNAME[0], group);
+        }
 
         public void UpdateBlocksSize()
         {
@@ -144,6 +155,35 @@ namespace ShapingUI
             }
             
         }
+
+        public void SetSliderValue(int sliderindex, float value)
+        {
+            foreach(UIBlock block in blocks)
+            {
+                if (block.SetSliderValue(sliderindex, value))
+                    return;
+            }
+        }
+
+        public void SetColorGroupValue(int groupindex, int value)
+        {
+            foreach (UIBlock block in blocks)
+            {
+                if (block.SetColorGroupValue(groupindex, value))
+                    return;
+            }
+        }
+
+        public void SetTextureGroupValue(int groupindex, int value)
+        {
+            foreach (UIBlock block in blocks)
+            {
+                if (block.SetTextureGroupValue(groupindex, value))
+                    return;
+            }
+        }
+
+        
 
 
         public TYPE type;

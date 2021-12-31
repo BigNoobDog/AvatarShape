@@ -49,7 +49,7 @@ namespace ShapingUI
         void Revert()
         {
             value = 0.5f;
-            UIApplyValue();
+            ApplyValue();
         }
 
         void OnValueChanged(string str)
@@ -69,6 +69,12 @@ namespace ShapingUI
         void UIApplyValue()
         {
             Value.text = value.ToString();
+            Slider.SetValueWithoutNotify(value);
+        }
+
+        void ApplyValue()
+        {
+            Value.text = value.ToString();
             Slider.value = value;
         }
 
@@ -81,7 +87,7 @@ namespace ShapingUI
 
         public void UpdateItem()
         {
-            value = (float)Random.Range(0, 100) / 100.0f;
+            value = 0.5f;
 
             UIApplyValue();
             ValueChanged();
@@ -90,6 +96,18 @@ namespace ShapingUI
         void ValueChanged()
         {
             UIEventManager.onUpdateSliderValue.Invoke(type, index, value);
+        }
+
+        public bool SetShowValue(int sliderindex, float value)
+        {
+            if (index == sliderindex)
+            {
+                Value.text = value.ToString();
+                Slider.SetValueWithoutNotify(value);
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

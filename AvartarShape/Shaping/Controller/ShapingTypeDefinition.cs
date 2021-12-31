@@ -2,6 +2,39 @@ using System.Collections.Generic;
 
 namespace ShapingController
 {
+
+    public static class ShapingModel
+    {
+        public enum MODEL
+        {
+            F201,
+            MODELNUM,
+        }
+
+        public static string[] MODELNAME =
+        {
+            "F201",
+            "NULL"
+        };
+
+        public static MODEL ModelStr2Enum(string target)
+        {
+            if ((int)MODEL.MODELNUM != MODELNAME.Length)
+                return MODEL.MODELNUM;
+
+
+            for(int i = 0; i < MODELNAME.Length; i ++)
+            {
+                if(target == MODELNAME[i])
+                {
+                    return (MODEL)i;
+                }
+            }
+
+            return MODEL.MODELNUM;
+        }
+    }
+
     public enum TYPE
     {
         FACE = 0,
@@ -9,6 +42,7 @@ namespace ShapingController
         HAIR,
         CLOTH,
         MAKEUP,
+        PRESET,
         TYPENUM
     }
 
@@ -138,6 +172,22 @@ namespace ShapingController
         public float limit;
     }
 
+    public class ShapingPresetConfigItem
+    {
+        public int index;
+        public string icon;
+        public string path;
+        public ShapingModel.MODEL model;
+    }
+
+    public class ShapingHairConfigItem
+    {
+        public int index;
+        public string icon;
+        public string path;
+        //public ShapingModel.MODEL model;
+    }
+
     public class ShapingUsableData
     {
         public List<ShapingSkeletonTrans> FaceBones;
@@ -211,9 +261,12 @@ namespace ShapingController
         public static string DefaultHairConfig = "Hair.csv";
         public static string DefaultImportFile = "Face1.dat";
         public static string DefaultExportFile = "FaceCustomed1.dat";
+        public static string DefaultPresetConfig = "Preset.csv";
 
         public static string DefaultTextureTable = "Texture.csv";
         public static string DefaultColorTable = "Color.csv";
+
+        public static string DefaultPath = "Assets\\AvartarShape\\Shaping\\Config\\";
     }
 
 }

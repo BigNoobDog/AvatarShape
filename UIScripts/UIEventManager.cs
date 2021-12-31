@@ -12,6 +12,12 @@ namespace ShapingUI
     public class OnColorItemChange : UnityEngine.Events.UnityEvent<TYPE, int, int, Color> { }
     public class OnImageItemChange : UnityEngine.Events.UnityEvent<TYPE, int, int, string> { }
 
+    public class OnMakeSliderValueChange : UnityEngine.Events.UnityEvent<TYPE, int, float> { }
+
+    public class OnMakeColorItemChange : UnityEngine.Events.UnityEvent<TYPE, int, int> { }
+
+    public class OnMakeImageItemChange : UnityEngine.Events.UnityEvent<TYPE, int, int> { }
+
     public class OnExport : UnityEngine.Events.UnityEvent<string> { }
     public class OnImport : UnityEngine.Events.UnityEvent<string> { }
 
@@ -26,6 +32,13 @@ namespace ShapingUI
                 onUpdateImageValue.AddListener(player.GetImageEventHandle());
                 OnImportEvent.AddListener(player.ImportData);
                 OnExportEvent.AddListener(player.ExportData);
+            }
+
+            if (UIMan != null)
+            {
+                OnImportDataMakeSliderValueChange.AddListener(UIMan.GetMakeSliderValueChangeEventHandle());
+                OnImportDataMakeColorValueChange.AddListener(UIMan.GetMakeColorValueChangeEventHandle());
+                OnImportDataMakeImageValueChange.AddListener(UIMan.GetMakeImageValueChangeEventHandle());
             }
                 
         }
@@ -42,13 +55,24 @@ namespace ShapingUI
 
         static public OnImport OnImportEvent = new OnImport();
 
+        static public OnMakeSliderValueChange OnImportDataMakeSliderValueChange = new OnMakeSliderValueChange();
+
+        static public OnMakeColorItemChange OnImportDataMakeColorValueChange = new OnMakeColorItemChange();
+
+        static public OnMakeImageItemChange OnImportDataMakeImageValueChange = new OnMakeImageItemChange();
+
 
         static public void BindPlayer(Player p)
         {
             player = p;
         }
+        static public void BindUIMan(UIManager uimanager)
+        {
+            UIMan = uimanager;
+        }
 
 
+        static UIManager UIMan;
         static Player player;
     }
 }

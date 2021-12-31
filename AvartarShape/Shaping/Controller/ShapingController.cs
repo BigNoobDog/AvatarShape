@@ -20,6 +20,8 @@ namespace ShapingController
         private ShapingCloth   cloth;
         private ShapingSockets sockets;
 
+        private ShapingPreset  preset;
+
         private Dictionary<int, List<ShapingColorTableItem>> ColorTable;
         private Dictionary<int, List<ShapingTextureTableItem>> TextureTable;
 
@@ -32,12 +34,13 @@ namespace ShapingController
             hair    = new ShapingHair();
             cloth   = new ShapingCloth();
             sockets = new ShapingSockets();
+            preset  = new ShapingPreset();
 
             ColorTable = new Dictionary<int, List<ShapingColorTableItem>>();
             TextureTable = new Dictionary<int, List<ShapingTextureTableItem>>();
         }
 
-        public void Setup(string faceconfig, string bodyconfig, string hairconfig, string makeupconfig, string clothconfig, string socketsconfig,
+        public void Setup(string faceconfig, string bodyconfig, string hairconfig, string makeupconfig, string clothconfig, string socketsconfig, string presetconfig,
             string texturetable, string colortable)
         {
             LoadTextureConfig(texturetable);
@@ -51,6 +54,7 @@ namespace ShapingController
             makeup.SetTextureTable(TextureTable);
             makeup.SetColorTable(ColorTable);
             sockets.LoadConfig(socketsconfig);
+            preset.LoadConfig(presetconfig);
 
 
         }
@@ -178,9 +182,12 @@ namespace ShapingController
 
             face.LoadConfig(path + FileNames.DefaultFaceConfig);
             body.LoadConfig(path + FileNames.DefaultBodyConfig);
+
             makeup.LoadConfig(path + FileNames.DefaultMakeupConfig);
             makeup.SetTextureTable(TextureTable);
             makeup.SetColorTable(ColorTable);
+
+            preset.LoadConfig(path + FileNames.DefaultPresetConfig);
         }
 
         public void ImportData()
@@ -337,8 +344,20 @@ namespace ShapingController
 
             return data;
         }
-                        
 
+        public ShapingUsableData GetBlankUsableData()
+        {
+            ShapingUsableData data = new ShapingUsableData();
+            data.FaceBones = face.GetBlankBonesUsableData();
+            data.BodyBones = body.GetBlankBonesUsableData();
+
+            data.ScalaParams = makeup.GetBlankUsableScalaParams();
+            data.VectorParams = makeup.GetBlankUsableVectorParams();
+            data.TextureParams = makeup.GetBlankUsableTextureParams();
+            //foreach(<>)
+
+            return data;
+        }
 
         //export the usable data to dat file
         public void ExportData(string filename)
@@ -395,6 +414,11 @@ namespace ShapingController
         public List<ShapingTextureTableItem> GetTextureGroup(int tableindex)
         {
             return TextureTable[tableindex];
+        }
+
+        public List<ShapingPresetConfigItem> GetPresetConfig()
+        {
+            return preset.GetConfig();
         }
 
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(TYPE type, int index, float value)
@@ -485,5 +509,27 @@ namespace ShapingController
 
         }
 
+
+        //Public Function
+        public List<float> GetFaceData()
+        {
+            return face.GetDatas();
+        }
+        public List<float> GetBodyData()
+        {
+            return body.GetDatas();
+        }
+        public List<float> GetMakeupSliderData()
+        {
+            return makeup.GetSliderDatas();
+        }
+        public List<int> GetMakeupTextureData()
+        {
+            return makeup.GetTextureDatas();
+        }
+        public List<int> GetMakeupColorData()
+        {
+            return makeup.GetColorDatas();
+        }
     }
 }

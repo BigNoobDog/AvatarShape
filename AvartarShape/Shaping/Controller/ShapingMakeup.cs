@@ -472,6 +472,85 @@ namespace ShapingController
             return ScalaParams;
         }
 
+        //Base Function
+        public Dictionary<PART, List<ShapingMaterialTextureParam>> GetBlankUsableTextureParams()
+        {
+            Dictionary<PART, List<ShapingMaterialTextureParam>> BlankRet = new Dictionary<PART, List<ShapingMaterialTextureParam>>();
+
+            foreach(PART part in TextureParams.Keys)
+            {
+                List<ShapingMaterialTextureParam> newList = new List<ShapingMaterialTextureParam>();
+                foreach(ShapingMaterialTextureParam param in TextureParams[part])
+                {
+                    ShapingMaterialTextureParam newparam = new ShapingMaterialTextureParam();
+                    newparam.ParamName = param.ParamName;
+                    newparam.Value = "";
+                    newList.Add(newparam);
+                }
+                BlankRet[part] = newList;
+            }
+
+            return BlankRet;
+        }
+
+        public Dictionary<PART, List<ShapingMaterialVectorParam>> GetBlankUsableVectorParams()
+        {
+            Dictionary<PART, List<ShapingMaterialVectorParam>> BlankRet = new Dictionary<PART, List<ShapingMaterialVectorParam>>();
+
+            foreach (PART part in VectorParams.Keys)
+            {
+                List<ShapingMaterialVectorParam> newList = new List<ShapingMaterialVectorParam>();
+                foreach (ShapingMaterialVectorParam param in VectorParams[part])
+                {
+                    ShapingMaterialVectorParam newparam = new ShapingMaterialVectorParam();
+                    newparam.ParamName = param.ParamName;
+                    newparam.r = 1.0f;
+                    newparam.g = 1.0f;
+                    newparam.b = 1.0f;
+                    newList.Add(newparam);
+                }
+                BlankRet[part] = newList;
+            }
+
+            return BlankRet;
+        }
+
+        public Dictionary<PART, List<ShapingMaterialScalaParam>> GetBlankUsableScalaParams()
+        {
+            Dictionary<PART, List<ShapingMaterialScalaParam>> BlankRet = new Dictionary<PART, List<ShapingMaterialScalaParam>>();
+
+            foreach (PART part in ScalaParams.Keys)
+            {
+                List<ShapingMaterialScalaParam> newList = new List<ShapingMaterialScalaParam>();
+                foreach (ShapingMaterialScalaParam param in ScalaParams[part])
+                {
+                    ShapingMaterialScalaParam newparam = new ShapingMaterialScalaParam();
+                    newparam.ParamName = param.ParamName;
+                    newparam.Value = 0.5f;
+                    newList.Add(newparam);
+                }
+                BlankRet[part] = newList;
+            }
+
+            return BlankRet;
+        }
+
+        //Public Function
+        public List<int> GetTextureDatas()
+        {
+            return TextureDatas;
+        }
+    
+        public List<int> GetColorDatas()
+        {
+            return ColorDatas;
+        }
+
+        public List<float> GetSliderDatas()
+        {
+            return SliderDatas;
+        }
+
         private List<ShapingImageConfig> Config;
         private List<ShapingMaterialTextureItem> textures;
         private List<ShapingMaterialColorItem> colors;

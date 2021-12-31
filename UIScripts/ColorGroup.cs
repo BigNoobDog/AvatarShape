@@ -80,10 +80,15 @@ namespace ShapingUI
 
         }
 
-        public void UpdateState(int groupindex, int itemindex)
+        public void UpdateStateEventHandle(int groupindex, int itemindex)
+        {
+            UpdateState(groupindex, itemindex);
+        }
+
+        public bool UpdateState(int groupindex, int itemindex)
         {
             if (groupindex != index)
-                return;
+                return false;
 
             for (int i = 0; i < buttons.Count; i++)
             {
@@ -97,6 +102,7 @@ namespace ShapingUI
                     item.SetOutlineSelected(false);
                 }
             }
+            return true;
         }
 
         public float GetHeight()

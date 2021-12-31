@@ -69,6 +69,11 @@ namespace ShapingController
                     //1
                     int SliderID = int.Parse(aryLine[1]);
                     configitem.index = SliderID;
+
+                    if ((SliderID + 1) > slidernum)
+                    {
+                        slidernum = SliderID + 1;
+                    }
                     //2
                     int FirLevel = int.Parse(aryLine[2]);
                     configitem.FirstLevel = FirLevel;
@@ -136,7 +141,7 @@ namespace ShapingController
             sr.Close();
             fs.Close();
 
-            for (int i = 0; i < Config.Count; i++)
+            for (int i = 0; i < slidernum; i++)
             {
                 Datas.Add(0.5f);
             }
@@ -380,10 +385,72 @@ namespace ShapingController
             return Bones;
         }
 
+        public List<ShapingSkeletonTrans> GetBlankBonesUsableData()
+        {
+            List<ShapingSkeletonTrans> BlankBones = new List<ShapingSkeletonTrans>();
+            foreach (ShapingSkeletonTrans tran in Bones)
+            {
+                ShapingSkeletonTrans newTran = new ShapingSkeletonTrans();
+                newTran.bonename = tran.bonename;
+                newTran.Mask = tran.Mask;
+                int mask = tran.Mask;
+                if ((mask & (int)(1 << (int)BONEMASK.LOCATIONX)) != 0)
+                {
+                    newTran.Location.x = -tran.Location.x;
+                }
 
+                if ((mask & (int)(1 << (int)BONEMASK.LOCATIONY)) != 0)
+                {
+                    newTran.Location.y = -tran.Location.y;
+                }
+                if ((mask & (int)(1 << (int)BONEMASK.LOCATIONZ)) != 0)
+                {
+                    newTran.Location.z = -tran.Location.z;
+                }
 
-        public List<ShapingSkeletonTransConfig> Config;
-        public List<float> Datas;
+                if ((mask & (int)(1 << (int)BONEMASK.ROTATIONX)) != 0)
+                {
+                    newTran.Rotation.x = -tran.Rotation.x;
+                }
+
+                if ((mask & (int)(1 << (int)BONEMASK.ROTATIONY)) != 0)
+                {
+                    newTran.Rotation.y = -tran.Rotation.y;
+                }
+
+                if ((mask & (int)(1 << (int)BONEMASK.ROTATIONZ)) != 0)
+                {
+                    newTran.Rotation.z = -tran.Rotation.z;
+                }
+
+                if ((mask & (int)(1 << (int)BONEMASK.SCALEX)) != 0)
+                {
+                    newTran.Scale.x = -tran.Scale.x;
+                }
+
+                if ((mask & (int)(1 << (int)BONEMASK.SCALEY)) != 0)
+                {
+                    newTran.Scale.y = -tran.Scale.y;
+                }
+
+                if ((mask & (int)(1 << (int)BONEMASK.SCALEZ)) != 0)
+                {
+                    newTran.Scale.z = -tran.Scale.z;
+                }
+
+                BlankBones.Add(newTran);
+            }
+
+            return BlankBones;
+        }
+
+        public List<float> GetDatas()
+        {
+            return Datas;
+        }
+
+        private List<ShapingSkeletonTransConfig> Config;
+        private List<float> Datas;
         private List<ShapingSkeletonTrans> Bones;
 
         private int slidernum = 0;

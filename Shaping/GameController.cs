@@ -32,12 +32,12 @@ public class GameController : MonoBehaviour
         //UIEventMan
 
         UIEventManager.BindPlayer(player);
+        UIEventManager.BindUIMan(UIMan);
         UIEventManager.Init();
 
         cameraMan = gameObject.AddComponent<CameraController>();
         characterPresentMan = gameObject.AddComponent<CharacterPresentController>();
         characterPresentMan.Setup(PlayerObject);
-
 
     }
 

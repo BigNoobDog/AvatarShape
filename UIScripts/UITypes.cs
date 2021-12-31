@@ -32,10 +32,14 @@ namespace ShapingUI
         public static float sliderheight = 30;
 
         public static float imagewidth = 30;
+        public static float Presetimagewidth = 80;
         public static float imagemarginwidth = 8;
         public static int imagenumperrow = 5;
+        public static int Presetimagenumperrow = 3;
 
         public static float item_margin_width = 10;
+
+        public static string PresetName = "‘§…Ë¡≥";
     }
 
 }

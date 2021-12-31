@@ -126,6 +126,30 @@ namespace ShapingUI
             imagegroup = item;
         }
 
+        public void AddPresetImageGroup(int groupid, string desc, List<ShapingPresetConfigItem> group)
+        {
+            RectTransform newimagegroup = GameObject.Instantiate(ImageGroupPrototype);
+
+            newimagegroup.name = desc;
+            ImageGroup item = newimagegroup.GetComponentInChildren<ImageGroup>();
+
+            Vector2 presizeD = newimagegroup.sizeDelta;
+            //Vector2 prePos = newslider.anchoredPosition;
+            presizeD.y += UISize.Presetimagewidth * (group.Count / UISize.Presetimagenumperrow) + 2 * UISize.imagemarginwidth;
+
+            newimagegroup.SetParent(Content.transform);
+
+
+            newimagegroup.anchoredPosition = new Vector2(0.0f, 0.0f);
+            newimagegroup.sizeDelta = presizeD;
+
+
+            item.gameObject.SetActive(true);
+            item.Setup(type, groupid, desc, group, ImageItemPrototype);
+            //item.UpdateSize();
+            imagegroup = item;
+        }
+
         public void AddColorGroup(int groupid, string desc, List<ShapingColorTableItem> group)
         {
             RectTransform newcolorgroup = GameObject.Instantiate(ColorGroupPrototype);
@@ -219,6 +243,33 @@ namespace ShapingUI
             return sliders.Count;
         }
 
+        public bool SetSliderValue(int sliderindex, float value)
+        {
+            foreach(SliderItem item in sliders)
+            {
+                if (item.SetShowValue(sliderindex, value))
+                    return true;
+            }
+            return false;
+        }
+
+
+        public bool SetColorGroupValue(int groupindex, int value)
+        {
+            if (colorgroup == null)
+                return false;
+
+            return colorgroup.UpdateState(groupindex, value);
+        }
+
+        public bool SetTextureGroupValue(int groupindex, int value)
+        {
+            if (imagegroup == null)
+                return false;
+
+            return  imagegroup.UpdateState(groupindex, value);
+
+        }
 
         //Private Variable
         int index;

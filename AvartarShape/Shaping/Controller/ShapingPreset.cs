@@ -3,13 +3,15 @@ using System.Data;
 using System.IO;
 using System.Text;
 
+
 namespace ShapingController
 {
-    public class ShapingHair
+
+    public class ShapingPreset
     {
-        public ShapingHair()
+        public ShapingPreset()
         {
-            Config = new List<ShapingHairConfigItem>();
+            Config = new List<ShapingPresetConfigItem>();
         }
 
         public void LoadConfig(string config)
@@ -38,7 +40,7 @@ namespace ShapingController
                 {
                     aryLine = strLine.Split(',');
 
-                    ShapingHairConfigItem configitem = new ShapingHairConfigItem();
+                    ShapingPresetConfigItem configitem = new ShapingPresetConfigItem();
 
                     int length = aryLine.Length;
                     if (length != columnCount)
@@ -63,8 +65,8 @@ namespace ShapingController
                     string path = aryLine[2];
                     configitem.path = path;
 
-                    //string ModelName = aryLine[3];
-                    //configitem.model = ShapingModel.ModelStr2Enum(ModelName);
+                    string ModelName = aryLine[3];
+                    configitem.model = ShapingModel.ModelStr2Enum(ModelName);
 
                     Config.Add(configitem);
                 }
@@ -72,21 +74,11 @@ namespace ShapingController
             }
         }
 
-        public string ExportData()
-        {
-            return "";
-        }
-
-        public bool ApplyData()
-        {
-            return true;
-        }
-
-        public List<ShapingHairConfigItem> GetConfig()
+        public List<ShapingPresetConfigItem> GetConfig()
         {
             return Config;
         }
 
-        public List<ShapingHairConfigItem> Config;
+        public List<ShapingPresetConfigItem> Config;
     }
 }

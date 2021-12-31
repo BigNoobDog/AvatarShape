@@ -48,7 +48,7 @@ namespace ShapingUI
 
             button.onClick.AddListener(OnButtonClicked);
             SetOutlineSelected(false);
-            onUpdateImageStateValue.AddListener(group.UpdateState);
+            onUpdateImageStateValue.AddListener(group.UpdateStateEventHandle);
 
             iconpath = "UI/Textures/" + iconpath;
 
@@ -81,8 +81,6 @@ namespace ShapingUI
             UIEventManager.onUpdateImageValue.Invoke(type, groupindex, itemindex, texturepath);
             onUpdateImageStateValue.Invoke(groupindex, itemindex);
         }
-
-
 
         public class OnItemSelectedStateChange : UnityEngine.Events.UnityEvent<int, int> { }
     }

@@ -34,7 +34,7 @@ namespace ShapingUI
 
             button.onClick.AddListener(OnButtonClicked);
             SetOutlineSelected(false);
-            onUpdateColorStateValue.AddListener(group.UpdateState);
+            onUpdateColorStateValue.AddListener(group.UpdateStateEventHandle);
         }
 
         //Public Function

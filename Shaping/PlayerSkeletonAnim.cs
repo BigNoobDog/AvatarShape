@@ -40,8 +40,6 @@ namespace ShapingPlayer
             SkeletonRoot = root;
         }
 
-
-
         public void OnSliderValueChangeFromUI(TYPE type, int index, float value)
         {
             string logstr = GlobalFunAndVar.TYPE2Str(type) + " " + index.ToString() + " " + value.ToString();
@@ -61,9 +59,6 @@ namespace ShapingPlayer
                     Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
                     Quaternion quaoffset = Quaternion.Euler(rotoffset);
 
-                    //bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
-                    //bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
-                    //bones[key].localScale += (scaoffset - bonespretran[key].localScale);
 
                     bones[key].localPosition += locoffset;
                     bones[key].rotation *= quaoffset;
@@ -84,9 +79,6 @@ namespace ShapingPlayer
                     Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
                     Quaternion quaoffset = Quaternion.Euler(rotoffset);
 
-                    //bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
-                    //bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
-                    //bones[key].localScale += (scaoffset - bonespretran[key].localScale);
 
                     bones[key].localPosition += locoffset;
                     bones[key].rotation *= quaoffset;
@@ -106,10 +98,6 @@ namespace ShapingPlayer
                 Vector3 rotoffset = new Vector3(tran.Rotation.x, tran.Rotation.y, tran.Rotation.z);
                 Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
                 Quaternion quaoffset = Quaternion.Euler(rotoffset);
-
-                //bones[key].localPosition += (locoffset - bonespretran[key].localPosition);
-                //bones[key].rotation = bones[key].rotation * quaoffset * Quaternion.Inverse(bonespretran[key].rotation);
-                //bones[key].localScale += (scaoffset - bonespretran[key].localScale);
 
                 if(bones.ContainsKey(key) == true)
                 {
