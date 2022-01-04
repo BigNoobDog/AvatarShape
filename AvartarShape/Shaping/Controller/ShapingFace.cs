@@ -220,13 +220,30 @@ namespace ShapingController
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(int index, float value)
         {
             //For Core
-            List<ShapingSkeletonTrans> tmp = new List<ShapingSkeletonTrans>();
-            tmp = SetOneBoneSliderValue_Internal(index, value);
 
-            List<ShapingSkeletonTrans> diff = DiffUsableData(tmp);
+            //Method0
+            //List<ShapingSkeletonTrans> tmp = new List<ShapingSkeletonTrans>();
+            //tmp = SetOneBoneSliderValue_Internal(index, value);
+
+            //List<ShapingSkeletonTrans> diff = DiffUsableData(tmp);
+
+            //Datas[index] = value;
+            //ApplyData();
+
+            //Method1
+            List<ShapingSkeletonTrans> tmp = new List<ShapingSkeletonTrans>();
+            foreach(ShapingSkeletonTrans tran in Bones)
+            {
+                ShapingSkeletonTrans newtran = tran;
+                tmp.Add(newtran);
+            }
 
             Datas[index] = value;
             ApplyData();
+
+            List<ShapingSkeletonTrans> diff = DiffUsableData(Bones, tmp);
+
+
 
             return diff;
         }
@@ -241,6 +258,73 @@ namespace ShapingController
                 foreach(ShapingSkeletonTrans bone in Bones)
                 {
                     if(bone.bonename == tran.bonename)
+                    {
+                        ShapingSkeletonTrans newtep = new ShapingSkeletonTrans();
+                        Vector3d loc = new Vector3d();
+
+                        int mask = tran.Mask;
+                        newtep.Mask |= mask;
+                        newtep.bonename = bone.bonename;
+                        if ((mask & (int)(1 << (int)BONEMASK.LOCATIONX)) != 0)
+                        {
+                            newtep.Location.x = tran.Location.x - bone.Location.x;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.LOCATIONY)) != 0)
+                        {
+                            newtep.Location.y = tran.Location.y - bone.Location.y;
+                        }
+                        if ((mask & (int)(1 << (int)BONEMASK.LOCATIONZ)) != 0)
+                        {
+                            newtep.Location.z = tran.Location.z - bone.Location.z;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.ROTATIONX)) != 0)
+                        {
+                            newtep.Rotation.x = tran.Rotation.x - bone.Rotation.x;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.ROTATIONY)) != 0)
+                        {
+                            newtep.Rotation.y = tran.Rotation.y - bone.Rotation.y;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.ROTATIONZ)) != 0)
+                        {
+                            newtep.Rotation.z = tran.Rotation.z - bone.Rotation.z;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.SCALEX)) != 0)
+                        {
+                            newtep.Scale.x = tran.Scale.x - bone.Scale.x;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.SCALEY)) != 0)
+                        {
+                            newtep.Scale.y = tran.Scale.y - bone.Scale.y;
+                        }
+
+                        if ((mask & (int)(1 << (int)BONEMASK.SCALEZ)) != 0)
+                        {
+                            newtep.Scale.z = tran.Scale.z - bone.Scale.z;
+                        }
+
+                        ret.Add(newtep);
+                    }
+                }
+            }
+
+            return ret;
+        }
+        public List<ShapingSkeletonTrans> DiffUsableData(List<ShapingSkeletonTrans> src, List<ShapingSkeletonTrans> dst)
+        {
+            List<ShapingSkeletonTrans> ret = new List<ShapingSkeletonTrans>();
+
+            foreach (ShapingSkeletonTrans tran in dst)
+            {
+                foreach (ShapingSkeletonTrans bone in src)
+                {
+                    if (bone.bonename == tran.bonename)
                     {
                         ShapingSkeletonTrans newtep = new ShapingSkeletonTrans();
                         Vector3d loc = new Vector3d();

@@ -100,7 +100,7 @@ namespace ShapingController
     }
 
     //map to image
-    public class ShapingSkeletonTrans
+    public class ShapingSkeletonTrans : System.ICloneable
     {
         public ShapingSkeletonTrans()
         {
@@ -119,6 +119,17 @@ namespace ShapingController
         public Vector3d Rotation;
 
         public Vector3d Scale;
+
+        public object Clone()
+        {
+            ShapingSkeletonTrans newTran = new ShapingSkeletonTrans();
+            newTran.bonename = this.bonename;
+            newTran.Mask = this.Mask;
+            newTran.Location = this.Location;
+            newTran.Rotation = this.Rotation;
+            newTran.Scale = this.Scale;
+            return (object)newTran;
+        }
     }
 
 

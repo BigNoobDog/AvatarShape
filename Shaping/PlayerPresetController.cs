@@ -38,7 +38,6 @@ namespace ShapingPlayer
         }
 
 
-
         public void OnImageValueChangedFromUI(TYPE type, int index, int value, string path)
         {
             if(player != null)

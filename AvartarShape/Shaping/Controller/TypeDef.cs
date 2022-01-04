@@ -1,6 +1,7 @@
+
 namespace ShapingController
 {
-    public class Vector3d
+    public class Vector3d: System.ICloneable
     {
         public float x, y, z;
 
@@ -16,6 +17,15 @@ namespace ShapingController
             x = valuex;
             y = valuey;
             z = valuez;
+        }
+
+        public object Clone()
+        {
+            Vector3d newV = new Vector3d();
+            newV.x = this.x;
+            newV.y = this.y;
+            newV.z = this.z;
+            return (object)newV;
         }
 
         public static Vector3d operator +(Vector3d lhs, Vector3d rhs)
