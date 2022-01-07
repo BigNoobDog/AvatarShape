@@ -289,6 +289,14 @@ namespace ShapingController
             return true;
         }
 
+        public void RandomData(TYPE type)
+        {
+            if (type == TYPE.FACE)
+            {
+                face.RandomData();
+            }
+        }
+
         //Generate the usable data
         public bool ApplyData()
         {

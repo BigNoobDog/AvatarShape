@@ -52,9 +52,9 @@ namespace ShapingPlayer
                 MatMan.SetLeftEyeMaterial(lefteyesmaterials[0]);
             }
 
-            SkinnedMeshRenderer RightEyeSMR = LeftEye.GetComponent<SkinnedMeshRenderer>();
+            SkinnedMeshRenderer RightEyeSMR = RightEye.GetComponent<SkinnedMeshRenderer>();
             List<Material> Righteyesmaterials = new List<Material>();
-            LeftEyeSMR.GetMaterials(Righteyesmaterials);
+            RightEyeSMR.GetMaterials(Righteyesmaterials);
             if (Righteyesmaterials.Count > 0)
             {
                 MatMan.SetRightEyeMaterial(Righteyesmaterials[0]);
@@ -133,6 +133,17 @@ namespace ShapingPlayer
             controller.ExportData(filepath);
         }
 
+        public void RandomData(TYPE type)
+        {
+
+            controller.RandomData(type);
+            controller.ApplyData();
+
+            ApplyData(controller.GetUsableData());
+
+            ApplyDataToUI();
+        }
+
         public void SetShapingController(ShapingControllerCore core)
         {
             controller = core;
@@ -189,6 +200,8 @@ namespace ShapingPlayer
         public GameObject RightEye;
 
         public GameObject SkeletonRoot;
+
+        public Transform RotatePoint;
 
     }
 

@@ -21,6 +21,7 @@ namespace ShapingUI
     public class OnExport : UnityEngine.Events.UnityEvent<string> { }
     public class OnImport : UnityEngine.Events.UnityEvent<string> { }
 
+    public class OnRandom : UnityEngine.Events.UnityEvent<TYPE> { }
     static public class UIEventManager
     {
         static public void Init()
@@ -32,6 +33,9 @@ namespace ShapingUI
                 onUpdateImageValue.AddListener(player.GetImageEventHandle());
                 OnImportEvent.AddListener(player.ImportData);
                 OnExportEvent.AddListener(player.ExportData);
+
+
+                OnRandomEvent.AddListener(player.RandomData);
             }
 
             if (UIMan != null)
@@ -54,6 +58,8 @@ namespace ShapingUI
         static public OnExport OnExportEvent = new OnExport();
 
         static public OnImport OnImportEvent = new OnImport();
+
+        static public OnRandom OnRandomEvent = new OnRandom();
 
         static public OnMakeSliderValueChange OnImportDataMakeSliderValueChange = new OnMakeSliderValueChange();
 

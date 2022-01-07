@@ -156,6 +156,21 @@ namespace ShapingUI
             
         }
 
+        public void UpdateContentSize()
+        {
+            
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                Height += blocks[i].GetHeight();
+            }
+            RectTransform rt = Content.GetComponent<RectTransform>();
+            if (Height > rt.sizeDelta.y)
+            {
+                rt.sizeDelta = new Vector2(rt.sizeDelta.x, Height);
+            }
+            //Content.transform.D
+        }
+
         public void SetSliderValue(int sliderindex, float value)
         {
             foreach(UIBlock block in blocks)
@@ -183,6 +198,10 @@ namespace ShapingUI
             }
         }
 
+        public void SetRandom()
+        {
+
+        }
         
 
 
@@ -201,5 +220,6 @@ namespace ShapingUI
         private float imageheight;
         private float colorwidth;
         private float colorheight;
+        private float Height;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace ShapingController
@@ -261,6 +262,15 @@ namespace ShapingController
                 return "MAKEUP";
             else
                 return "Undefined";
+        }
+
+        public static float GetRandomFloat(float max)
+        {
+            Random ra = new Random(unchecked((int)DateTime.Now.Millisecond));
+            
+            int i_tmp = ra.Next(10000);
+            float ret = ((float)i_tmp / (float)10000) * max;
+            return ret;
         }
     }
     public class FileNames

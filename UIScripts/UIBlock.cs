@@ -60,6 +60,12 @@ namespace ShapingUI
 
         public void AddSliderItem(int sliderindex, string desc)
         {
+            for(int i = 0; i < sliders.Count; i ++)
+            {
+                if (sliders[i].GetIndex() == sliderindex)
+                    return;
+            }
+
             RectTransform newslider = GameObject.Instantiate(SliderItemPrototype);
             newslider.name = desc;
             SliderItem item = newslider.GetComponent<SliderItem>();
@@ -271,6 +277,11 @@ namespace ShapingUI
 
         }
 
+        public float GetHeight()
+        {
+            return height;
+        }
+
         //Private Variable
         int index;
         Text Desc;
@@ -289,8 +300,8 @@ namespace ShapingUI
         ImageGroup imagegroup;
         ColorGroup colorgroup;
 
-        float width;
-        float height;
+        private float width;
+        private float height;
 
         float startY;
     }

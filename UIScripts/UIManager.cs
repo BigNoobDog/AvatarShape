@@ -44,6 +44,7 @@ namespace ShapingUI
             ClothB  = GameObject.Find("ClothB").GetComponent<Button>();
             MakeupB = GameObject.Find("MakeupB").GetComponent<Button>();
             PresetB = GameObject.Find("PresetB").GetComponent<Button>();
+            RandomB = GameObject.Find("RandomB").GetComponent<Button>();
 
             Import = GameObject.Find("Btn_Import").GetComponent<Button>();
             Export = GameObject.Find("Btn_Export").GetComponent<Button>();
@@ -83,6 +84,11 @@ namespace ShapingUI
             if (PresetB != null && PresetPanel != null)
             {
                 PresetB.onClick.AddListener(OnClickPresetButton);
+            }
+
+            if (RandomB != null)
+            {
+                RandomB.onClick.AddListener(OnClickRandom);
             }
 
             if (Import != null)
@@ -154,7 +160,7 @@ namespace ShapingUI
             }
 
             FaceScroller.UpdateBlocksSize();
-
+            FaceScroller.UpdateContentSize();
         }
 
         private void SetupBodyUI()
@@ -326,7 +332,11 @@ namespace ShapingUI
             PresetPanel.SetActive(true);
         }
 
-
+        public void OnClickRandom()
+        {
+            //FaceScroller.SetRandom();
+            UIEventManager.OnRandomEvent.Invoke(TYPE.FACE);
+        }
         public void SetController(ShapingControllerCore c)
         {
             core = c;
@@ -414,6 +424,7 @@ namespace ShapingUI
         private Button ClothB;
         private Button MakeupB;
         private Button PresetB;
+        private Button RandomB;
 
         private Button Import;
         private Button Export;

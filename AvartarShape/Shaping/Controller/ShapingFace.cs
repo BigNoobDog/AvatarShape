@@ -151,6 +151,15 @@ namespace ShapingController
             Datas = datas;
         }
 
+
+        public void RandomData()
+        {
+            for(int i = 0; i < Datas.Count; i ++)
+            {
+                Datas[i] = GlobalFunAndVar.GetRandomFloat(1.0f);
+            }
+        }
+
         public bool ApplyData()
         {
             Bones.Clear();

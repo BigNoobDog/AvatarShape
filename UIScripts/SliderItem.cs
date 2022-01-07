@@ -7,8 +7,8 @@ namespace ShapingUI
 {
     public class SliderItem : UIBehaviour
     {
-        TYPE type;
-        int index;
+        private TYPE type;
+        private int index;
         public Text Desc;
 
         private Slider Slider;
@@ -108,6 +108,16 @@ namespace ShapingUI
             }
             else
                 return false;
+        }
+
+        public int GetIndex()
+        {
+            return index;
+        }
+
+        public TYPE GetShapeType()
+        {
+            return type;
         }
     }
 }
