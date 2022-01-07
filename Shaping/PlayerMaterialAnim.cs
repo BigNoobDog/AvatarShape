@@ -9,7 +9,8 @@ namespace ShapingPlayer
     public class PlayerMaterialAnim : MonoBehaviour
     {
         private Material FaceMaterial;
-        private Material EyeMaterial;
+        private Material LeftEyeMaterial;
+        private Material RightEyeMaterial;
 
 
         // Start is called before the first frame update
@@ -56,9 +57,14 @@ namespace ShapingPlayer
             FaceMaterial = m;
         }
 
-        public void SetEyeMaterial(Material m)
+        public void SetLeftEyeMaterial(Material m)
         {
-            EyeMaterial = m;
+            LeftEyeMaterial = m;
+        }
+
+        public void SetRightEyeMaterial(Material m)
+        {
+            RightEyeMaterial = m;
         }
 
         public void OnColorValueChangedFromUI(TYPE type, int index, int value, Color color)
@@ -75,7 +81,8 @@ namespace ShapingPlayer
             }
             else if(configitem.part == PART.EYE)
             {
-                EyeMaterial.SetColor(configitem.name, color);
+                LeftEyeMaterial.SetColor(configitem.name, color);
+                RightEyeMaterial.SetColor(configitem.name, color);
             }
         }
 
@@ -98,7 +105,8 @@ namespace ShapingPlayer
             }
             else if (configitem.part == PART.EYE)
             {
-                EyeMaterial.SetTexture(configitem.name, t);
+                LeftEyeMaterial.SetTexture(configitem.name, t);
+                RightEyeMaterial.SetTexture(configitem.name, t);
             }
         }
 
@@ -117,7 +125,8 @@ namespace ShapingPlayer
             }
             else if (configitem.part == PART.EYE)
             {
-                EyeMaterial.SetFloat(configitem.name, lastvalue);
+                LeftEyeMaterial.SetFloat(configitem.name, lastvalue);
+                RightEyeMaterial.SetFloat(configitem.name, lastvalue);
             }
         }
 
@@ -134,7 +143,8 @@ namespace ShapingPlayer
                     }
                     else if (part == PART.EYE)
                     {
-                        EyeMaterial.SetFloat(param.ParamName, param.Value);
+                        LeftEyeMaterial.SetFloat(param.ParamName, param.Value);
+                        RightEyeMaterial.SetFloat(param.ParamName, param.Value);
                     }
                 }
 
@@ -157,7 +167,8 @@ namespace ShapingPlayer
                     }
                     else if (part == PART.EYE)
                     {
-                        EyeMaterial.SetTexture(param.ParamName, t);
+                        LeftEyeMaterial.SetTexture(param.ParamName, t);
+                        RightEyeMaterial.SetTexture(param.ParamName, t);
                     }
                 }
 
@@ -179,7 +190,8 @@ namespace ShapingPlayer
                     }
                     else if (part == PART.EYE)
                     {
-                        EyeMaterial.SetColor(param.ParamName, color);
+                        LeftEyeMaterial.SetColor(param.ParamName, color);
+                        RightEyeMaterial.SetColor(param.ParamName, color);
                     }
                 }
 

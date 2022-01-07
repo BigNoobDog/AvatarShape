@@ -39,11 +39,27 @@ namespace ShapingPlayer
                 MatMan.SetFaceMaterial(facematerials[0]);
             }
 
-            if (facematerials.Count > 2)
+            //if (facematerials.Count > 2)
+            //{
+            //    MatMan.SetEyeMaterial(facematerials[2]);
+            //}
+
+            SkinnedMeshRenderer LeftEyeSMR = LeftEye.GetComponent<SkinnedMeshRenderer>();
+            List<Material> lefteyesmaterials = new List<Material>();
+            LeftEyeSMR.GetMaterials(lefteyesmaterials);
+            if (lefteyesmaterials.Count > 0)
             {
-                MatMan.SetEyeMaterial(facematerials[2]);
+                MatMan.SetLeftEyeMaterial(lefteyesmaterials[0]);
             }
 
+            SkinnedMeshRenderer RightEyeSMR = LeftEye.GetComponent<SkinnedMeshRenderer>();
+            List<Material> Righteyesmaterials = new List<Material>();
+            LeftEyeSMR.GetMaterials(Righteyesmaterials);
+            if (Righteyesmaterials.Count > 0)
+            {
+                MatMan.SetRightEyeMaterial(Righteyesmaterials[0]);
+            }
+            
 
         }
 
@@ -169,6 +185,8 @@ namespace ShapingPlayer
 
         public GameObject Face;
         public GameObject Body;
+        public GameObject LeftEye;
+        public GameObject RightEye;
 
         public GameObject SkeletonRoot;
 

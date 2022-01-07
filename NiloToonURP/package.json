@@ -1,0 +1,28 @@
+{
+  "name": "com.kuroneko-shaderlab.nilotoon-urp",
+  "description": "NiloToonURP is a toon shading package for Unity URP. NiloToonURP provides artist-friendly workflows that let you quickly and easily create optimized toon shading across a range of platforms, from mobile to high-end consoles and PCs.",
+  "version": "0.8.10",
+  "unity": "2019.4",
+  "unityRelease": "0f1",
+  "displayName": "NiloToonURP",
+  "dependencies": {
+    "com.unity.jobs": "0.2.10-preview.13",
+    "com.unity.render-pipelines.universal": "7.4.1"
+  },
+  "keywords": [
+    "graphics",
+    "rendering",
+    "mobile",
+    "nilo",
+    "toon",
+    "URP",
+    "character",
+    "environment",
+    "anime"
+  ],
+  "author": {
+    "name": "Kuroneko ShaderLab Limited",
+    "url": "nilotoon@gmail.com"
+  },
+  "type": "module"
+}

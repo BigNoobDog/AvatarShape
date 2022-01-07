@@ -401,6 +401,7 @@ namespace ShapingController
                         if(trans[transindex].bonename == key)
                         {
                             tran = trans[transindex];
+                            break;
                         }
                     }
 
