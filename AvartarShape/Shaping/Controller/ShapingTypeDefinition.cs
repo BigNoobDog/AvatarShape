@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace ShapingController
 {
 
@@ -263,11 +264,15 @@ namespace ShapingController
             else
                 return "Undefined";
         }
+        static int GetRandomSeedbyGuid()
+        {
+            return System.Guid.NewGuid().GetHashCode();
+        }
 
         public static float GetRandomFloat(float max)
         {
-            Random ra = new Random(unchecked((int)DateTime.Now.Millisecond));
-            
+            //Random ra = new Random(unchecked((int)DateTime.Now.Millisecond));
+            Random ra = new Random(GetRandomSeedbyGuid());
             int i_tmp = ra.Next(10000);
             float ret = ((float)i_tmp / (float)10000) * max;
             return ret;
