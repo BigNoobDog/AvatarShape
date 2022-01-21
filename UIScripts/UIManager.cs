@@ -25,6 +25,7 @@ namespace ShapingUI
         //--------------Private Function
         public void Setup()
         {
+            ImoirtPhotoMan = new ImportPhotoController();
             SetupUIElements();
             SetupFaceUI();
             SetupBodyUI();
@@ -45,9 +46,17 @@ namespace ShapingUI
             MakeupB = GameObject.Find("MakeupB").GetComponent<Button>();
             PresetB = GameObject.Find("PresetB").GetComponent<Button>();
             RandomB = GameObject.Find("RandomB").GetComponent<Button>();
+            RevertB = GameObject.Find("RevertB").GetComponent<Button>();
+            ReturnB = GameObject.Find("ReturnB").GetComponent<Button>();
 
             Import = GameObject.Find("Btn_Import").GetComponent<Button>();
             Export = GameObject.Find("Btn_Export").GetComponent<Button>();
+            ImageImport = GameObject.Find("PhotoB").GetComponent<Button>();
+
+            HairB2 = GameObject.Find("HairB2").GetComponent<Button>();
+            ShirtB = GameObject.Find("ShirtB").GetComponent<Button>(); 
+            DressB = GameObject.Find("DressB").GetComponent<Button>();
+            ShoesB = GameObject.Find("ShoesB").GetComponent<Button>();
 
             FacePanel   = GameObject.Find("FacePanel");
             BodyPanel   = GameObject.Find("BodyPanel");
@@ -91,6 +100,16 @@ namespace ShapingUI
                 RandomB.onClick.AddListener(OnClickRandom);
             }
 
+            if (RevertB != null)
+            {
+                RevertB.onClick.AddListener(OnClickRevert);
+            }
+
+            if (ReturnB != null)
+            {
+                ReturnB.onClick.AddListener(OnClickReturn);
+            }
+
             if (Import != null)
             {
                 Import.onClick.AddListener(OnClickImport);
@@ -100,6 +119,27 @@ namespace ShapingUI
                 Export.onClick.AddListener(OnClickExport);
             }
 
+            if(ImageImport != null)
+            {
+                ImageImport.onClick.AddListener(OnClickImageImport);
+            }
+
+            if (HairB2 != null)
+            {
+                HairB2.onClick.AddListener(OnClickClothHair);
+            }
+            if (ShirtB != null)
+            {
+                ShirtB.onClick.AddListener(OnClickClothShirt);
+            }
+            if (DressB != null)
+            {
+                DressB.onClick.AddListener(OnClickClothDress);
+            }
+            if (ShoesB != null)
+            {
+                ShoesB.onClick.AddListener(OnClickClothShoes);
+            }
 
 
             GameObject temobj = GameObject.Find("FaceScroller");
@@ -108,7 +148,7 @@ namespace ShapingUI
                 FaceScroller = temobj.AddComponent<ScrollerController>();
                 FaceScroller.name = "FaceScroller";
                 FaceScroller.gameObject.SetActive(true);    
-                FaceScroller.Setup(TYPE.FACE, BlockItemPrototype);
+                FaceScroller.Setup(TYPE.FACE, BlockItemPrototype, core);
             }
 
             temobj = GameObject.Find("BodyScroller");
@@ -117,7 +157,16 @@ namespace ShapingUI
                 BodyScroller = temobj.AddComponent<ScrollerController>();
                 BodyScroller.name = "BodyScroller";
                 BodyScroller.gameObject.SetActive(true);
-                BodyScroller.Setup(TYPE.BODY, BlockItemPrototype);
+                BodyScroller.Setup(TYPE.BODY, BlockItemPrototype, core);
+            }
+            
+            temobj = GameObject.Find("ClothScroller");
+            if (temobj != null)
+            {
+                ClothScroller = temobj.AddComponent<ScrollerController>();
+                ClothScroller.name = "ClothScroller";
+                ClothScroller.gameObject.SetActive(true);
+                ClothScroller.Setup(TYPE.CLOTH, BlockItemPrototype, core);
             }
 
             temobj = GameObject.Find("MakeupScroller");
@@ -126,7 +175,7 @@ namespace ShapingUI
                 MakeupScroller = temobj.AddComponent<ScrollerController>();
                 MakeupScroller.name = "MakeupScroller";
                 MakeupScroller.gameObject.SetActive(true);
-                MakeupScroller.Setup(TYPE.MAKEUP, BlockItemPrototype);
+                MakeupScroller.Setup(TYPE.MAKEUP, BlockItemPrototype, core);
             }
 
 
@@ -136,7 +185,7 @@ namespace ShapingUI
                 PresetScroller = temobj.AddComponent<ScrollerController>();
                 PresetScroller.name = "PresetScroller";
                 PresetScroller.gameObject.SetActive(true);
-                PresetScroller.Setup(TYPE.PRESET, BlockItemPrototype);
+                PresetScroller.Setup(TYPE.PRESET, BlockItemPrototype, core);
             }
         }
 
@@ -192,7 +241,8 @@ namespace ShapingUI
 
         private void SetupClothUI()
         {
-
+            ClothScroller.AddModelBlock();
+            ClothScroller.AddColorBlock();
         }
 
         private void SetupMakeupUI()
@@ -311,6 +361,7 @@ namespace ShapingUI
             ClothPanel. SetActive(true);
             MakeupPanel.SetActive(false);
             PresetPanel.SetActive(false);
+            ClothScroller.ShowClothSubCatelog(TYPE.CLOTH_HAIR);
         }
         public void OnClickMakeupButton()
         {
@@ -337,6 +388,19 @@ namespace ShapingUI
             //FaceScroller.SetRandom();
             UIEventManager.OnRandomEvent.Invoke(TYPE.FACE);
         }
+
+        public void OnClickRevert()
+        {
+            //FaceScroller.SetRandom();
+            UIEventManager.OnRevertEvent.Invoke(TYPE.FACE);
+        }
+
+        public void OnClickReturn()
+        {
+            //FaceScroller.SetRandom();
+            UIEventManager.OnReturnEvent.Invoke();
+        }
+
         public void SetController(ShapingControllerCore c)
         {
             core = c;
@@ -352,6 +416,11 @@ namespace ShapingUI
             ExportData();
         }
 
+        public void OnClickImageImport()
+        {
+
+            ImoirtPhotoMan.OpenFile();
+        }
         public void ImportData()
         {
             
@@ -411,12 +480,32 @@ namespace ShapingUI
         }
 
 
+        public void OnClickClothHair()
+        {
+            ClothScroller.ShowClothSubCatelog(TYPE.CLOTH_HAIR);
+        }
+
+        public void OnClickClothShirt()
+        {
+            ClothScroller.ShowClothSubCatelog(TYPE.CLOTH_SHIRT);
+        }
+
+        public void OnClickClothDress()
+        {
+            ClothScroller.ShowClothSubCatelog(TYPE.CLOTH_DRESS);
+        }
+
+        public void OnClickClothShoes()
+        {
+            ClothScroller.ShowClothSubCatelog(TYPE.CLOTH_SHOES);
+        }
+
         //--------------Public Variable
 
         //--------------Private Variable
         private ShapingControllerCore core;
 
-
+        private ImportPhotoController ImoirtPhotoMan;
         //--------------UI Elements
         private Button FaceB;
         private Button BodyB;
@@ -425,9 +514,18 @@ namespace ShapingUI
         private Button MakeupB;
         private Button PresetB;
         private Button RandomB;
+        private Button RevertB;
+        private Button ReturnB;
+
+        private Button HairB2;
+        private Button ShirtB;
+        private Button DressB;
+        private Button ShoesB;
 
         private Button Import;
         private Button Export;
+
+        private Button ImageImport;
 
         private GameObject FacePanel;
         private GameObject BodyPanel;
@@ -445,5 +543,6 @@ namespace ShapingUI
 
         public RectTransform BlockItemPrototype;
 
+        private STEP step;
     }
 }

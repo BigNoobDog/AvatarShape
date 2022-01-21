@@ -5,6 +5,16 @@ namespace ShapingUI
 
 
     //For Editor
+    public enum STEP
+    {
+        Entrance,
+        Main,
+        Face,
+        Makeup,
+        Hair,
+        StepNum
+    }
+
     public class ShapingUIEditorSlider
     {
         public TYPE type;
@@ -40,6 +50,16 @@ namespace ShapingUI
         public static float item_margin_width = 10;
 
         public static string PresetName = "预设脸";
+
+        public static string HairName = "头发";
+
+        public static string ShirtName = "上衣";
+        
+        public static string DressName = "裙子";
+        
+        public static string ShoesName = "鞋子";
+
+
     }
 
 }

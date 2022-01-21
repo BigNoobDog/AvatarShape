@@ -6,6 +6,15 @@ using UnityEditor;
 
 namespace ShapingPlayer
 {
+    public enum CameraPos
+    {
+        Start,
+        FAR,
+        MID,
+        NEAR,
+        CameraPosNum,
+    }
+
     public class TransformLikeUnity
     {
         public TransformLikeUnity()

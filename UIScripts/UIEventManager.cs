@@ -22,6 +22,10 @@ namespace ShapingUI
     public class OnImport : UnityEngine.Events.UnityEvent<string> { }
 
     public class OnRandom : UnityEngine.Events.UnityEvent<TYPE> { }
+    public class OnRevert : UnityEngine.Events.UnityEvent<TYPE> { }
+    public class OnReturn : UnityEngine.Events.UnityEvent { }
+
+    public class OnImportJPG : UnityEngine.Events.UnityEvent<string> { }
     static public class UIEventManager
     {
         static public void Init()
@@ -36,6 +40,10 @@ namespace ShapingUI
 
 
                 OnRandomEvent.AddListener(player.RandomData);
+                OnRevertEvent.AddListener(player.RevertData);
+
+                OnReturnEvent.AddListener(GC.Return);
+                OnImportJPGEvent.AddListener(player.ImportJPG);
             }
 
             if (UIMan != null)
@@ -61,6 +69,12 @@ namespace ShapingUI
 
         static public OnRandom OnRandomEvent = new OnRandom();
 
+        static public OnRevert OnRevertEvent = new OnRevert();
+
+        static public OnReturn OnReturnEvent = new OnReturn();
+
+        static public OnImportJPG OnImportJPGEvent = new OnImportJPG();
+
         static public OnMakeSliderValueChange OnImportDataMakeSliderValueChange = new OnMakeSliderValueChange();
 
         static public OnMakeColorItemChange OnImportDataMakeColorValueChange = new OnMakeColorItemChange();
@@ -76,9 +90,14 @@ namespace ShapingUI
         {
             UIMan = uimanager;
         }
+        static public void BindGameController(GameController gc)
+        {
+            GC = gc;
+        }
 
 
         static UIManager UIMan;
         static Player player;
+        static GameController GC;
     }
 }

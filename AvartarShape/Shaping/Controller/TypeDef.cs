@@ -38,4 +38,38 @@ namespace ShapingController
             return ret;
         }
     }
+
+    public class Vector2d : System.ICloneable
+    {
+        public float x, y;
+
+        public Vector2d()
+        {
+            x = 0.0f;
+            y = 0.0f;
+        }
+
+        public Vector2d(float valuex, float valuey)
+        {
+            x = valuex;
+            y = valuey;
+        }
+
+        public object Clone()
+        {
+            Vector3d newV = new Vector3d();
+            newV.x = this.x;
+            newV.y = this.y;
+            return (object)newV;
+        }
+
+        public static Vector2d operator +(Vector2d lhs, Vector2d rhs)
+        {
+            Vector2d ret = new Vector2d();
+            ret.x = lhs.x + rhs.x;
+            ret.y = lhs.y + rhs.y;
+            
+            return ret;
+        }
+    }
 }

@@ -9,7 +9,7 @@ namespace ShapingUI
     public class SliderScroller : UIBehaviour
     {
         [SerializeField]
-        private RectTransform itemPrototype;
+        public RectTransform itemPrototype;
 
         [SerializeField, Range(0, 30)]
         int instantateItemCount = 4;

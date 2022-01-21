@@ -25,6 +25,7 @@ namespace ShapingController
         private Dictionary<int, List<ShapingColorTableItem>> ColorTable;
         private Dictionary<int, List<ShapingTextureTableItem>> TextureTable;
 
+        private FaceParser faceparser;
 
         public void Init()
         {
@@ -35,6 +36,8 @@ namespace ShapingController
             cloth   = new ShapingCloth();
             sockets = new ShapingSockets();
             preset  = new ShapingPreset();
+
+            faceparser = new FaceParser();
 
             ColorTable = new Dictionary<int, List<ShapingColorTableItem>>();
             TextureTable = new Dictionary<int, List<ShapingTextureTableItem>>();
@@ -177,6 +180,8 @@ namespace ShapingController
 
         public void Setup(string path)
         {
+            faceparser.Setup();
+
             LoadTextureConfig(path + FileNames.DefaultTextureTable);
             LoadColorConfig(path + FileNames.DefaultColorTable);
 
@@ -297,6 +302,14 @@ namespace ShapingController
             }
         }
 
+        public void RevertData(TYPE type)
+        {
+            if (type == TYPE.FACE)
+            {
+                face.RevertData();
+            }
+        }
+
         //Generate the usable data
         public bool ApplyData()
         {
@@ -351,6 +364,16 @@ namespace ShapingController
             //foreach(<>)
 
             return data;
+        }
+
+        //Useless Function
+        //TODO
+        public void SetUsableData(ShapingUsableData data)
+        {
+            if (data == null)
+                return;
+
+            //face.SetBonesUsableData(data.FaceBones);
         }
 
         public ShapingUsableData GetBlankUsableData()
@@ -431,7 +454,7 @@ namespace ShapingController
 
         public List<ShapingSkeletonTrans> SetOneBoneSliderValue(TYPE type, int index, float value)
         {
-            List<ShapingSkeletonTrans> trans = null;
+            List<ShapingSkeletonTrans> trans = new List<ShapingSkeletonTrans>();
 
             if (type == TYPE.FACE)
             {
@@ -448,6 +471,38 @@ namespace ShapingController
                 
 
             return trans;
+        }
+
+
+        public List<ShapingSkeletonTrans> SetOneBoneSliderValue_Pure(TYPE type, int index, float value)
+        {
+            List<ShapingSkeletonTrans> trans = new List<ShapingSkeletonTrans>();
+
+            if (type == TYPE.FACE)
+            {
+                trans = face.SetOneBoneSliderValue_Pure(index, value);
+            }
+            else if (type == TYPE.BODY)
+            {
+                trans = body.SetOneBoneSliderValue(index, value);
+            }
+            else if (type == TYPE.MAKEUP)
+            {
+                makeup.SetMaterialScalaParam(index, value);
+            }
+
+
+            return trans;
+        }
+
+        public void ParsePhoto(string filename)
+        {
+            faceparser.LoadLandMarkInfo(filename);
+            faceparser.Normalize();
+            faceparser.Parse();
+            List<float> tmp_list = faceparser.GenerateFaceShapingData();
+            face.ImportData(tmp_list);
+            face.ApplyData();
         }
 
 

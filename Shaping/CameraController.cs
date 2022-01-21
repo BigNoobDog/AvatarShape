@@ -1,14 +1,110 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using UnityEngine;
 
-namespace ShapingController
+namespace ShapingPlayer
 {
     public static class CameraTrans
     {
-        public static Vector3 NearestLoc = new Vector3(0, 1.45f, -9.2f);
-        public static Vector3 MidLoc = new Vector3(0, 1.36f, -9.55f);
-        public static Vector3 FarestLoc = new Vector3(0, 1f, -10f);
+        public static Vector3 NearestLoc;
+        public static Vector3 MidLoc;
+        public static Vector3 FarestLoc;
+        public static Vector3 StartLoc;
+
+        public static Vector3 GetLocFromEnum(CameraPos t)
+        {
+            if (t == CameraPos.FAR)
+                return FarestLoc;
+            else if (t == CameraPos.MID)
+                return MidLoc;
+            else if (t == CameraPos.NEAR)
+                return NearestLoc;
+            else if (t == CameraPos.Start)
+                return StartLoc;
+            else
+                return StartLoc;
+        }
+        public static void LoadConfig(string filepath)
+        {
+            Encoding encoding = Encoding.BigEndianUnicode; //Encoding.ASCII;//
+            FileStream fs = new FileStream(filepath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            StreamReader sr = new StreamReader(fs, encoding);
+
+            string strLine = "";
+            string[] aryLine = null;
+            string[] tableHead = null;
+            int columnCount = 0;
+            bool IsFirst = true;
+            int rownum = 0;
+
+            while ((strLine = sr.ReadLine()) != null)
+            {
+                rownum++;
+                if (IsFirst == true)
+                {
+                    tableHead = strLine.Split(',');
+                    IsFirst = false;
+                    columnCount = tableHead.Length;
+                }
+                else
+                {
+                    aryLine = strLine.Split(',');
+
+                    if (columnCount != aryLine.Length)
+                    {
+                        continue;
+                    }
+
+                    if (aryLine[0] == "Start")
+                    {
+                        float locx = float.Parse(aryLine[1]);
+                        float locy = float.Parse(aryLine[2]);
+                        float locz = float.Parse(aryLine[3]);
+
+                        StartLoc = new Vector3(locx, locy, locz);
+                    }
+
+                    if (aryLine[0] == "Start")
+                    {
+                        float locx = float.Parse(aryLine[1]);
+                        float locy = float.Parse(aryLine[2]);
+                        float locz = float.Parse(aryLine[3]);
+
+                        StartLoc = new Vector3(locx, locy, locz);
+                    }
+
+                    if (aryLine[0] == "Far")
+                    {
+                        float locx = float.Parse(aryLine[1]);
+                        float locy = float.Parse(aryLine[2]);
+                        float locz = float.Parse(aryLine[3]);
+
+                        FarestLoc = new Vector3(locx, locy, locz);
+                    }
+
+                    if (aryLine[0] == "Mid")
+                    {
+                        float locx = float.Parse(aryLine[1]);
+                        float locy = float.Parse(aryLine[2]);
+                        float locz = float.Parse(aryLine[3]);
+
+                        MidLoc = new Vector3(locx, locy, locz);
+                    }
+
+                    if (aryLine[0] == "Near")
+                    {
+                        float locx = float.Parse(aryLine[1]);
+                        float locy = float.Parse(aryLine[2]);
+                        float locz = float.Parse(aryLine[3]);
+
+                        NearestLoc = new Vector3(locx, locy, locz);
+                    }
+
+                }
+            }
+        }
     }
 
 
@@ -19,85 +115,51 @@ namespace ShapingController
                                                                 //private float totalRun = 1.0f;
 
         //Private Control data
+        private CameraPos LastPos;
+        private CameraPos AimPos;
 
-
-        // := -1 Far
-        // :=  0 Mid
-        // :=  1 Near
-        private int MouseMid = -1;
-
-        private float MovingTime = 1f;
-        
-        //-1 back
-        // 0 still
-        // 1 Forward
-        private int MovingState = 0;
+        private float MovingDuration = 1f;
         private float CurrentMovingTime;
+
+        private bool bMoving = false;
+
         private GameObject Maincamera;
 
         private void Start()
         {
             lastMouse = Input.mousePosition;
 
+            CameraTrans.LoadConfig("Assets\\AvartarShape\\Shaping\\Config\\CameraConfig.csv");
             Maincamera = GameObject.Find("Main Camera");
-            Maincamera.transform.position = CameraTrans.FarestLoc;
+            Maincamera.transform.position = CameraTrans.StartLoc;
+            LastPos = CameraPos.Start;
+            AimPos = CameraPos.Start;
         }
 
         void Update()
         {
-
-            //Use wasd to control the camera
-            //Vector3 LocationOffset = GetKeyBoardBaseInput() * 0.005f;
-            //Vector3 loc = camera.transform.position + LocationOffset;
-            //camera.transform.position = loc;
-
-
             MouseMiddleInput();
 
-            Vector3 curLoc = new Vector3();
-
-            if (MovingState == 1)
+            //Vector3 curLoc = new Vector3();
+            if(bMoving)
             {
-                if(MouseMid == 0)
-                {
-                    curLoc = CameraTrans.FarestLoc + (CameraTrans.MidLoc - CameraTrans.FarestLoc) * (MovingTime- CurrentMovingTime) / MovingTime;
-                    Maincamera.transform.position = curLoc;
-                }
-                else if(MouseMid == 1)
-                {
-                    curLoc = CameraTrans.MidLoc + (CameraTrans.NearestLoc - CameraTrans.MidLoc) * (MovingTime - CurrentMovingTime) / MovingTime;
-                    Maincamera.transform.position = curLoc;
-                }
-                else
-                {
-
-                }
+                CurrentMovingTime += Time.deltaTime;
             }
-            else if(MovingState == -1)
+            else
             {
-                if(MouseMid == 0)
-                {
-                    curLoc = CameraTrans.NearestLoc + (CameraTrans.MidLoc - CameraTrans.NearestLoc) * (MovingTime - CurrentMovingTime) / MovingTime;
-                    Maincamera.transform.position = curLoc;
-                }
-                else
-                {
-                    curLoc = CameraTrans.MidLoc + (CameraTrans.FarestLoc - CameraTrans.MidLoc) * (MovingTime - CurrentMovingTime) / MovingTime;
-                    Maincamera.transform.position = curLoc;
-                }
+                return;
             }
 
 
-            if (MovingState != 0)
+            Vector3 pos = Degree2Curve(CameraTrans.GetLocFromEnum(LastPos), CameraTrans.GetLocFromEnum(AimPos), CurrentMovingTime, MovingDuration);
+            Maincamera.transform.position = pos;
+            if (CurrentMovingTime > MovingDuration)
             {
-                CurrentMovingTime -= Time.deltaTime;
+                CurrentMovingTime = 0;
+                bMoving = false;
+                LastPos = AimPos;
             }
 
-            if (CurrentMovingTime < 0.0f)
-            {
-                CurrentMovingTime = MovingTime;
-                MovingState = 0;
-            }
         }
 
         private Vector3 GetKeyBoardBaseInput()
@@ -134,32 +196,92 @@ namespace ShapingController
         private void MouseMiddleInput()
         {
 
+            if (bMoving == true)
+                return;
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (MovingState == 0 && MouseMid < 1)
-                {
-                    MovingState = 1;
-                    MouseMid++;
-                    CurrentMovingTime = MovingTime;
-                }
-                else
-                    return;
+                MoveForward();
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                if (MovingState == 0 && MouseMid > -1)
-                {
-                    MovingState = -1;
-                    MouseMid--;
-                    CurrentMovingTime = MovingTime;
-                }    
-                else
-                    return;
-
-               
+                MoveBack();
             }
+        }
+
+        public bool MoveTo(CameraPos pos)
+        {
+            if (bMoving == true)
+                return false;
+
+            AimPos = pos;
+            bMoving = true;
+            return true;
+        }
+
+        public void MoveForward()
+        {
+            if(LastPos == CameraPos.FAR)
+            {
+                MoveTo(CameraPos.MID);
+            }
+            else if(LastPos == CameraPos.MID)
+            {
+                MoveTo(CameraPos.NEAR);
+            }
+        }
+
+        public void MoveBack()
+        {
+            if(LastPos == CameraPos.NEAR)
+            {
+                MoveTo(CameraPos.MID);
+            }
+            else if(LastPos == CameraPos.MID)
+            {
+                MoveTo(CameraPos.FAR);
+            }
+        }
+
+        //Y = 2x - x^2
+        //|             *    
+        //|         *
+        //|     *
+        //|   *
+        //| *
+        //|*
+        //|________________________
+        public Vector3 Degree2Curve(Vector3 srcpos, Vector3 dstpos, float interval, float duration)
+        {
+            if (duration < 0.0001 && duration > -0.0001)
+                return srcpos;
+            float tmp = interval / duration;
+            if (tmp > 1.0f)
+                tmp = 1.0f;
+
+            return srcpos + (dstpos - srcpos) * (2 * tmp - tmp * tmp);
+        }
+
+        //Y = 2x - x^2
+        //|                    * 
+        //|                 *  
+        //|              *
+        //|           *
+        //|        *
+        //|     *
+        //|  *
+        //|________________________
+
+        public Vector3 LinearCurve(Vector3 srcpos, Vector3 dstpos, float interval, float duration)
+        {
+            if (duration < 0.0001 && duration > -0.0001)
+                return srcpos;
+            float tmp = interval / duration;
+            if (tmp > 1.0f)
+                tmp = 1.0f;
+
+            return srcpos + (dstpos - srcpos) * tmp;
         }
     }
 }

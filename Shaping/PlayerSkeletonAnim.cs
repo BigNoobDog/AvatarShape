@@ -1,8 +1,11 @@
+#define USE_METHOD_LATEUPDATE
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ShapingController;
 using UnityEditor;
+
 
 namespace ShapingPlayer
 {
@@ -24,8 +27,9 @@ namespace ShapingPlayer
                 }
 
             }
-
+            InputTrans = new List<ShapingSkeletonTrans>();
             //onUpdateSliderValue.AddListener(OnSliderValueChangeFromUI);
+            XXX.Setup();
         }
 
         // Update is called once per frame
@@ -47,6 +51,46 @@ namespace ShapingPlayer
 
             if (type == TYPE.FACE)
             {
+#if (USE_METHOD_LATEUPDATE)
+                List<ShapingSkeletonTrans> trans = controller.SetOneBoneSliderValue(type, index, value);
+
+                foreach (ShapingSkeletonTrans tran in trans)
+                {
+                    string key = tran.bonename;
+                    //int mask = tran.Mask;
+                    //if(mask)
+                    Vector3 locoffset = new Vector3(tran.Location.x, tran.Location.y, tran.Location.z);
+                    Vector3 rotoffset = new Vector3(tran.Rotation.x, tran.Rotation.y, tran.Rotation.z);
+                    Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
+                    Quaternion quaoffset = Quaternion.Euler(rotoffset);
+
+                    foreach(string item in XXX.xx)
+                    {
+                        if(item == key)
+                        {
+                            bones[key].localPosition += locoffset;
+                            bones[key].rotation *= quaoffset;
+                        }
+                    }
+                    //bones[key].localPosition += locoffset;
+                    //bones[key].rotation *= quaoffset;
+                    bones[key].localScale += scaoffset;
+
+                }
+
+                InputTrans = controller.SetOneBoneSliderValue_Pure(type, index, value);
+
+                //foreach (ShapingSkeletonTrans tran in InputTrans)
+                //{
+                //    tran.Scale.x = 0.0f;
+                //    tran.Scale.y = 0.0f;
+                //    tran.Scale.z = 0.0f;
+                //}
+
+
+
+
+#else
                 List<ShapingSkeletonTrans> trans = controller.SetOneBoneSliderValue(type, index, value);
 
                 foreach (ShapingSkeletonTrans tran in trans)
@@ -63,7 +107,9 @@ namespace ShapingPlayer
                     bones[key].localPosition += locoffset;
                     bones[key].rotation *= quaoffset;
                     bones[key].localScale += scaoffset;
-                }
+
+                 }
+#endif
             }
             else if (type == TYPE.BODY)
             {
@@ -89,7 +135,36 @@ namespace ShapingPlayer
 
         public void SetScalaParams(List<ShapingSkeletonTrans> trans)
         {
-            foreach(ShapingSkeletonTrans tran in trans)
+#if (USE_METHOD_LATEUPDATE)
+            //List<ShapingSkeletonTrans> trans = controller.SetOneBoneSliderValue(type, index, value);
+
+            foreach (ShapingSkeletonTrans tran in trans)
+            {
+                string key = tran.bonename;
+                //int mask = tran.Mask;
+                //if(mask)
+                Vector3 locoffset = new Vector3(tran.Location.x, tran.Location.y, tran.Location.z);
+                Vector3 rotoffset = new Vector3(tran.Rotation.x, tran.Rotation.y, tran.Rotation.z);
+                Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
+                Quaternion quaoffset = Quaternion.Euler(rotoffset);
+
+                foreach (string item in XXX.xx)
+                {
+                    if (item == key)
+                    {
+                        bones[key].localPosition += locoffset;
+                        bones[key].rotation *= quaoffset;
+                    }
+                }
+                //bones[key].localPosition += locoffset;
+                //bones[key].rotation *= quaoffset;
+                bones[key].localScale += scaoffset;
+
+            }
+
+            InputTrans = trans;
+#else
+            foreach (ShapingSkeletonTrans tran in trans)
             {
                 string key = tran.bonename;
                 //int mask = tran.Mask;
@@ -106,15 +181,55 @@ namespace ShapingPlayer
                     bones[key].localScale += scaoffset;
                 }
             }
+#endif
+        }
+
+        private void LateUpdate()
+        {
+#if (USE_METHOD_LATEUPDATE)
+            foreach (ShapingSkeletonTrans tran in InputTrans)
+            {
+                string key = tran.bonename;
+                //int mask = tran.Mask;
+                //if(mask)
+                Vector3 locoffset = new Vector3(tran.Location.x, tran.Location.y, tran.Location.z);
+                Vector3 rotoffset = new Vector3(tran.Rotation.x, tran.Rotation.y, tran.Rotation.z);
+                Vector3 scaoffset = new Vector3(tran.Scale.x, tran.Scale.y, tran.Scale.z);
+                Quaternion quaoffset = Quaternion.Euler(rotoffset);
+
+                bool binXXX = false;
+                foreach(string item in XXX.xx)
+                {
+                    if(item == key)
+                    {
+                        binXXX = true;
+                    }
+                }
+
+                if(!binXXX)
+                {
+                    bones[key].localPosition += locoffset;
+                    bones[key].rotation *= quaoffset;
+                }
+
+                //bones[key].localScale += scaoffset;
+                //if(key == "cf_J_MayuTip_s_L")
+                //{
+                //    tran.Rotation = new Vector3d(0, 0, 0);
+                //}
+
+            }
+#else
+#endif
         }
 
         private ShapingControllerCore controller;
-        public GameObject SkeletonRoot;
+        private GameObject SkeletonRoot;
 
         private Dictionary<string, Transform> bones;
         private Dictionary<string, TransformLikeUnity> bonespretran;
 
         //public OnSliderValueChangeFromUI onUpdateSliderValue = new OnSliderValueChangeFromUI();
-
+        private List<ShapingSkeletonTrans> InputTrans;
     }
 }

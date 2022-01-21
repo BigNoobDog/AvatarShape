@@ -45,6 +45,10 @@ namespace ShapingController
         CLOTH,
         MAKEUP,
         PRESET,
+        CLOTH_HAIR,
+        CLOTH_SHIRT,
+        CLOTH_DRESS,
+        CLOTH_SHOES,
         TYPENUM
     }
 
@@ -276,6 +280,15 @@ namespace ShapingController
             int i_tmp = ra.Next(10000);
             float ret = ((float)i_tmp / (float)10000) * max;
             return ret;
+        }
+
+        public static bool FloatEqual(float x, float y)
+        {
+            if (x - y > 0.001)
+                return false;
+            if (y - x > 0.001)
+                return false;
+            return true;
         }
     }
     public class FileNames

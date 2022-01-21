@@ -1,0 +1,304 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7893295128165547882
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  threshold:
+    m_OverrideState: 1
+    m_Value: 0.7
+    min: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1.2
+    min: 0
+  scatter:
+    m_OverrideState: 1
+    m_Value: 0.756
+    min: 0
+    max: 1
+  clamp:
+    m_OverrideState: 1
+    m_Value: 65472.6
+    min: 0
+  tint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.8726415, b: 0.8726415, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
+  highQualityFiltering:
+    m_OverrideState: 0
+    m_Value: 0
+  skipIterations:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+    max: 16
+  dirtTexture:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+  dirtIntensity:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+--- !u!114 &-7011558710299706105
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.21625271, g: 0.19103774, b: 0.254717, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
+  center:
+    m_OverrideState: 0
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.397
+    min: 0
+    max: 1
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 0.255
+    min: 0.01
+    max: 1
+  rounded:
+    m_OverrideState: 0
+    m_Value: 0
+--- !u!114 &-6213353124889572738
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa15fc7246432d4fb73e65893caaa4b, type: 3}
+  m_Name: NiloToonAnimePostProcessVolume
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.161
+    min: 0
+    max: 1
+  drawBeforePostProcess:
+    m_OverrideState: 1
+    m_Value: 1
+  topLightEffectDrawHeight:
+    m_OverrideState: 1
+    m_Value: 0.405
+    min: 0
+    max: 1
+  topLightEffectIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  topLightDesaturate:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 1
+  topLightTintColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  bottomDarkenEffectDrawHeight:
+    m_OverrideState: 1
+    m_Value: 0.197
+    min: 0
+    max: 1
+  bottomDarkenEffectIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: CRS SampleScene URP (bloom postprocess)
+  m_EditorClassIdentifier: 
+  components:
+  - {fileID: -7893295128165547882}
+  - {fileID: -7011558710299706105}
+  - {fileID: -6213353124889572738}
+--- !u!114 &4753653325528386245
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a104dcd31bca784aaed640904c00a0b, type: 3}
+  m_Name: NiloToonCharRenderingControlVolume
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  charBaseColorMultiply:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  charBaseColorTintColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  charMulColorIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  charMulColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  charLerpColorUsage:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 1
+  charLerpColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 0}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  charOcclusionUsage:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+    max: 1
+  charIndirectLightMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  charIndirectLightMinColor:
+    m_OverrideState: 0
+    m_Value: {r: 0.01, g: 0.01, b: 0.01, a: 0}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
+  mainDirectionalLightIntensityMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  mainDirectionalLightIntensityMultiplierColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  mainDirectionalLightMaxContribution:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  mainDirectionalLightMaxContributionColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  additionalLightIntensityMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  additionalLightIntensityMultiplierColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  additionalLightMaxContribution:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  additionalLightMaxContributionColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  specularIntensityMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  specularInShadowMinIntensity:
+    m_OverrideState: 0
+    m_Value: 0.25
+    min: 0
+  specularReactToLightDirectionChange:
+    m_OverrideState: 0
+    m_Value: 0
+  depthTextureRimLightAndShadowWidthMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  charRimLightMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  charRimLightTintColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 0}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  charRimLightCameraDistanceFadeoutStartDistance:
+    m_OverrideState: 0
+    m_Value: 50
+    min: 0
+  charRimLightCameraDistanceFadeoutEndDistance:
+    m_OverrideState: 0
+    m_Value: 100
+    min: 0
+  charOutlineWidthMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  charOutlineWidthExtraMultiplierForXR:
+    m_OverrideState: 0
+    m_Value: 0.5
+    min: 0
+  charOutlineMulColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1

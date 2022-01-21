@@ -28,17 +28,19 @@ public class GameController : MonoBehaviour
             player = PlayerObject.GetComponent<Player>();
         }
         player.SetShapingController(controller);
-        player.Setup();
+        player.Setup(this);
         //UIEventMan
 
         UIEventManager.BindPlayer(player);
         UIEventManager.BindUIMan(UIMan);
+        UIEventManager.BindGameController(this);
         UIEventManager.Init();
 
         cameraMan = gameObject.AddComponent<CameraController>();
         characterPresentMan = gameObject.AddComponent<CharacterPresentController>();
         characterPresentMan.Setup(PlayerObject);
 
+        camerapos = CameraPos.Start;
     }
 
     // Update is called once per frame
@@ -56,11 +58,33 @@ public class GameController : MonoBehaviour
         controller.Setup(path);
     }
 
+    public void ClickPlayer()
+    {
+        if(camerapos == CameraPos.Start)
+        {
+            if(cameraMan.MoveTo(CameraPos.FAR))
+                camerapos = CameraPos.FAR;
+        }
+    }
+
+    public void Return()
+    {
+        if(camerapos != CameraPos.Start)
+        {
+            if(cameraMan.MoveTo(CameraPos.Start))
+                camerapos = CameraPos.Start;
+        }
+    }
+
     private ShapingControllerCore controller;
     UIManager UIMan;
     public GameObject PlayerObject;
 
     CameraController cameraMan;
+
+    UVCameraController UVcameraMan;
     CharacterPresentController characterPresentMan;
     Player player;
+
+    CameraPos camerapos;
 }

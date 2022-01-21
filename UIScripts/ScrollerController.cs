@@ -22,10 +22,11 @@ namespace ShapingUI
             
         }
 
-        public void Setup(TYPE typevalue, RectTransform blockp)
+        public void Setup(TYPE typevalue, RectTransform blockp, ShapingControllerCore corevalue)
         {
             type = typevalue;
             BlockItemPrototype = blockp;
+            core = corevalue;
 
             Component[] objs = gameObject.GetComponentsInChildren<Component>();
             foreach(Component obj in objs)
@@ -141,6 +142,54 @@ namespace ShapingUI
             block.AddPresetImageGroup(0, ShapingModel.MODELNAME[0], group);
         }
 
+        //TEMP
+        public void AddModelBlock()
+        {
+            
+            AddClothBlock(TYPE.CLOTH_HAIR, UISize.HairName);
+            AddClothBlock(TYPE.CLOTH_SHIRT, UISize.ShirtName);
+            AddClothBlock(TYPE.CLOTH_DRESS, UISize.DressName);
+            AddClothBlock(TYPE.CLOTH_SHOES, UISize.ShoesName);
+
+            for(int i = 0; i < 4; i ++)
+            {
+
+                UIBlock block = blocks[i];
+
+                block.UpdateInfo(i, block.transform.name);
+
+                block.AddColorGroup(0, "ÑÕÉ«", core.GetColorGroup(0));
+            }
+
+
+        }
+
+        public void AddClothBlock(TYPE typevalue, string lablename)
+        {
+            RectTransform blockpanel = GameObject.Instantiate(BlockItemPrototype);
+            if (blockpanel != null && Content != null)
+            {
+                Vector2 presizeD = blockpanel.sizeDelta;
+                Vector2 prePos = blockpanel.anchoredPosition;
+                prePos.y = 0;
+                blockpanel.SetParent(Content.transform);
+
+                blockpanel.anchoredPosition = prePos;
+                blockpanel.sizeDelta = presizeD;
+
+            }
+            blockpanel.name = lablename;
+            blockpanel.gameObject.SetActive(true);
+            UIBlock blockscript = blockpanel.GetComponent<UIBlock>();
+            blockscript.Setup(typevalue);
+            blocks.Add(blockscript);
+        }
+
+        public void AddColorBlock()
+        {
+            //CheckBlock(0, UISize.PresetName);
+        }
+
         public void UpdateBlocksSize()
         {
             for(int i = 0; i < blocks.Count; i ++)
@@ -203,9 +252,46 @@ namespace ShapingUI
 
         }
         
+        public void SetTYPE(TYPE value)
+        {
+            type = value;
+        }
+
+        public void ShowClothSubCatelog(TYPE typevalue)
+        {
+            if (blocks.Count != 4)
+                return;
+
+            foreach (var item in blocks)
+            {
+                item.gameObject.SetActive(false);
+            }
+
+            if (typevalue == TYPE.CLOTH_HAIR)
+            {
+                blocks[0].gameObject.SetActive(true);
+            }
+            else if(typevalue == TYPE.CLOTH_SHIRT)
+            {
+                blocks[1].gameObject.SetActive(true);
+            }
+            else if(typevalue == TYPE.CLOTH_DRESS)
+            {
+                blocks[2].gameObject.SetActive(true);
+            }
+            else if(typevalue == TYPE.CLOTH_SHOES)
+            {
+                blocks[3].gameObject.SetActive(true);
+            }
+        }
+
+        public TYPE GetTYPE()
+        {
+            return type;
+        }
 
 
-        public TYPE type;
+        private TYPE type;
         private RectTransform BlockItemPrototype;
 
         public GameObject Content;
@@ -221,5 +307,7 @@ namespace ShapingUI
         private float colorwidth;
         private float colorheight;
         private float Height;
+
+        private ShapingControllerCore core;
     }
 }

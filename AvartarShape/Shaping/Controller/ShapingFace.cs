@@ -160,6 +160,14 @@ namespace ShapingController
             }
         }
 
+        public void RevertData()
+        {
+            for (int i = 0; i < Datas.Count; i++)
+            {
+                Datas[i] = 0.5f;
+            }
+        }
+
         public bool ApplyData()
         {
             Bones.Clear();
@@ -194,6 +202,90 @@ namespace ShapingController
                         Bones[useablecontainindex].Location += tran.Location;
                         Bones[useablecontainindex].Rotation += tran.Rotation;
                         Bones[useablecontainindex].Scale += tran.Scale;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
+        public bool ApplyDataOnlyScale()
+        {
+            Bones.Clear();
+
+            for (int i = 0; i < Datas.Count; i++)
+            {
+                List<ShapingSkeletonTrans> oneDatatrans = SetOneBoneSliderValue_Internal(i, Datas[i]);
+                foreach (ShapingSkeletonTrans tran in oneDatatrans)
+                {
+                    string bonename = tran.bonename;
+                    int useablecontainindex = -1;
+                    for (int useableindex = 0; useableindex < Bones.Count; useableindex++)
+                    {
+                        if (Bones[useableindex].bonename == bonename)
+                        {
+                            useablecontainindex = useableindex;
+                            break;
+                        }
+                    }
+
+                    if (useablecontainindex == -1)
+                    {
+                        ShapingSkeletonTrans foo = new ShapingSkeletonTrans();
+                        foo.bonename = bonename;
+                        Bones.Add(foo);
+                        useablecontainindex = Bones.Count - 1;
+                    }
+
+                    if (useablecontainindex >= 0 && useablecontainindex < Bones.Count)
+                    {
+                        Bones[useablecontainindex].Mask |= tran.Mask;
+                        //Bones[useablecontainindex].Location += tran.Location;
+                        //Bones[useablecontainindex].Rotation += tran.Rotation;
+                        Bones[useablecontainindex].Scale += tran.Scale;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
+        public bool ApplyDataWithoutScale()
+        {
+            Bones.Clear();
+
+            for (int i = 0; i < Datas.Count; i++)
+            {
+                List<ShapingSkeletonTrans> oneDatatrans = SetOneBoneSliderValue_Internal(i, Datas[i]);
+                foreach (ShapingSkeletonTrans tran in oneDatatrans)
+                {
+                    string bonename = tran.bonename;
+                    int useablecontainindex = -1;
+                    for (int useableindex = 0; useableindex < Bones.Count; useableindex++)
+                    {
+                        if (Bones[useableindex].bonename == bonename)
+                        {
+                            useablecontainindex = useableindex;
+                            break;
+                        }
+                    }
+
+                    if (useablecontainindex == -1)
+                    {
+                        ShapingSkeletonTrans foo = new ShapingSkeletonTrans();
+                        foo.bonename = bonename;
+                        Bones.Add(foo);
+                        useablecontainindex = Bones.Count - 1;
+                    }
+
+                    if (useablecontainindex >= 0 && useablecontainindex < Bones.Count)
+                    {
+                        Bones[useablecontainindex].Mask |= tran.Mask;
+                        Bones[useablecontainindex].Location += tran.Location;
+                        Bones[useablecontainindex].Rotation += tran.Rotation;
+                        //Bones[useablecontainindex].Scale += tran.Scale;
                     }
                 }
             }
@@ -250,11 +342,26 @@ namespace ShapingController
             Datas[index] = value;
             ApplyData();
 
-            List<ShapingSkeletonTrans> diff = DiffUsableData(Bones, tmp);
+            List<ShapingSkeletonTrans> diff = DiffUsableData(tmp, Bones);
 
 
 
             return diff;
+        }
+
+        public List<ShapingSkeletonTrans> SetOneBoneSliderValue_Pure(int index, float value)
+        { 
+            Datas[index] = value;
+            ApplyData();
+
+            List<ShapingSkeletonTrans> newlist = new List<ShapingSkeletonTrans>();
+            foreach (ShapingSkeletonTrans tran in Bones)
+            {
+                ShapingSkeletonTrans tmptran = tran;
+                newlist.Add(tmptran);
+            }
+
+            return newlist;
         }
 
 
@@ -477,6 +584,11 @@ namespace ShapingController
         public List<ShapingSkeletonTrans> GetBonesUsableData()
         {
             return Bones;
+        }
+
+        public void SetBonesUsableData(List<ShapingSkeletonTrans> bones)
+        {
+            Bones = bones;
         }
 
         public List<ShapingSkeletonTrans> GetBlankBonesUsableData()
