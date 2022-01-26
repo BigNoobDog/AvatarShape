@@ -155,7 +155,50 @@ namespace ShapingUI
             //item.UpdateSize();
             imagegroup = item;
         }
+        public void AddModelGroup(int groupid, string desc, List<ShapingTextureTableItem> group)
+        {
+            RectTransform newimagegroup = GameObject.Instantiate(ImageGroupPrototype);
 
+            newimagegroup.name = desc;
+            ImageGroup item = newimagegroup.GetComponentInChildren<ImageGroup>();
+
+            Vector2 presizeD = newimagegroup.sizeDelta;
+            //Vector2 prePos = newslider.anchoredPosition;
+            presizeD.y += UISize.imagewidth * (group.Count / UISize.imagenumperrow) + 2 * UISize.imagemarginwidth;
+
+            newimagegroup.SetParent(Content.transform);
+
+
+            newimagegroup.anchoredPosition = new Vector2(0.0f, 0.0f);
+            newimagegroup.sizeDelta = presizeD;
+
+
+            item.gameObject.SetActive(true);
+            item.Setup(type, groupid, desc, group, ImageItemPrototype);
+            //item.UpdateSize();
+            imagegroup = item;
+
+            //RectTransform newmodelgroup = GameObject.Instantiate(ImageGroupPrototype);
+
+
+            //newmodelgroup.name = desc;
+            //ModelGroup item = newmodelgroup.GetComponentInChildren<ModelGroup>();
+
+            //Vector2 presizeD = newmodelgroup.sizeDelta;
+            ////Vector2 prePos = newslider.anchoredPosition;
+            //presizeD.y += UISize.imagewidth * (2 / UISize.imagenumperrow) + 2 * UISize.imagemarginwidth;
+
+            //newmodelgroup.SetParent(Content.transform);
+
+            //newmodelgroup.anchoredPosition = new Vector2(0.0f, 0.0f);
+            //newmodelgroup.sizeDelta = presizeD;
+
+
+            //item.gameObject.SetActive(true);
+            //item.Setup(type, groupid, desc, ImageGroupPrototype);
+            ////item.UpdateSize();
+            //modelgroup = item;
+        }
         public void AddColorGroup(int groupid, string desc, List<ShapingColorTableItem> group)
         {
             RectTransform newcolorgroup = GameObject.Instantiate(ColorGroupPrototype);
@@ -299,6 +342,7 @@ namespace ShapingUI
         //List<ColorGroup> colors;
         ImageGroup imagegroup;
         ColorGroup colorgroup;
+        ModelGroup modelgroup;
 
         private float width;
         private float height;

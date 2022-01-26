@@ -73,14 +73,17 @@ namespace ShapingPlayer
         {
             SkeMan = gameObject.AddComponent<PlayerSkeletonAnim>();
             MatMan = gameObject.AddComponent<PlayerMaterialAnim>();
+            MeshMan = gameObject.AddComponent<PlayerMeshAnim>();
             ImportPhotoMan = gameObject.AddComponent<PlayerImportPhoto>();
             presetMan = gameObject.AddComponent<PlayerPresetController>();
         }
 
         public void Setup(GameController gc)
         {
-            MatMan.Setup(controller);
+            MeshMan.Setup(controller);
+            MatMan.Setup(controller, MeshMan);
             SkeMan.Setup(controller, SkeletonRoot);
+            
             ImportPhotoMan.Setup(controller, this);
             presetMan.Setup(controller, this);
 
@@ -197,6 +200,7 @@ namespace ShapingPlayer
             MatMan.SetScalaParams(data.ScalaParams);
             MatMan.SetVectorParams(data.VectorParams);
             MatMan.SetTextureParams(data.TextureParams);
+            MeshMan.ImportData();
         }
 
         public void ExportData(string filepath)
@@ -265,6 +269,9 @@ namespace ShapingPlayer
         {
             if (type == TYPE.PRESET)
                 presetMan.OnImageValueChangedFromUI(type, index, value, FileNames.DefaultPath + path);
+            else if (type == TYPE.CLOTH_DRESS || type == TYPE.CLOTH_HAIR || type == TYPE.CLOTH_SHIRT ||
+                type == TYPE.CLOTH_SHOES)
+                MeshMan.OnImageValueChangedFromUI(type, index, value, path);
             else
                 MatMan.OnImageValueChangedFromUI(type, index, value, path);
         }
@@ -292,6 +299,7 @@ namespace ShapingPlayer
 
         private PlayerMaterialAnim MatMan;
         private PlayerSkeletonAnim SkeMan;
+        private PlayerMeshAnim MeshMan;
         private PlayerPresetController presetMan;
         private PlayerImportPhoto ImportPhotoMan;
 
@@ -305,7 +313,6 @@ namespace ShapingPlayer
         public Transform RotatePoint;
 
         private GameController gamecontroller;
-
 
     }
 

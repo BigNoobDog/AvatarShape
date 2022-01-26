@@ -156,7 +156,36 @@ namespace ShapingController
         {
             for(int i = 0; i < Datas.Count; i ++)
             {
-                Datas[i] = GlobalFunAndVar.GetRandomFloat(1.0f);
+                bool skip = false;
+                if(RandomOnlyScaleValue == true)
+                {
+                    foreach(var item in Config)
+                    {
+                        if(item.index == i)
+                        {
+                            int posx = item.Mask & (int)(1 << (int)BONEMASK.LOCATIONX);
+                            int posy = item.Mask & (int)(1 << (int)BONEMASK.LOCATIONY);
+                            int posz = item.Mask & (int)(1 << (int)BONEMASK.LOCATIONZ);
+                            int rotx = item.Mask & (int)(1 << (int)BONEMASK.ROTATIONX);
+                            int roty = item.Mask & (int)(1 << (int)BONEMASK.ROTATIONY);
+                            int rotz = item.Mask & (int)(1 << (int)BONEMASK.ROTATIONZ);
+                            if (posx != 0 || posy != 0 || posz != 0 || rotx != 0 || roty != 0 || rotz != 0)
+                            {
+                                skip = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (skip == true)
+                        Datas[i] = GlobalFunAndVar.GetRandomFloat(0.4f, 0.6f); 
+                    else
+                        Datas[i] = GlobalFunAndVar.GetRandomFloat(1.0f);
+                }
+                else
+                {
+                    Datas[i] = GlobalFunAndVar.GetRandomFloat(1.0f);
+                }
             }
         }
 
@@ -660,5 +689,7 @@ namespace ShapingController
         private List<ShapingSkeletonTrans> Bones;
 
         private int slidernum = 0;
+
+        private bool RandomOnlyScaleValue = true;
     }
 }

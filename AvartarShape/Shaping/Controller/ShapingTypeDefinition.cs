@@ -265,7 +265,17 @@ namespace ShapingController
                 return "BODY";
             else if (type == TYPE.MAKEUP)
                 return "MAKEUP";
-            else
+            else if (type == TYPE.CLOTH)
+                return "CLOTH";
+            else if (type == TYPE.CLOTH_DRESS)
+                return "CLOTH DRESS";
+            else if (type == TYPE.CLOTH_HAIR)
+                return "CLOTH HAIR";
+            else if (type == TYPE.CLOTH_SHIRT)
+                return "CLOTH SHIRT";
+            else if (type == TYPE.CLOTH_SHOES)
+                return "CLOTH SHOES";
+            else 
                 return "Undefined";
         }
         static int GetRandomSeedbyGuid()
@@ -279,6 +289,16 @@ namespace ShapingController
             Random ra = new Random(GetRandomSeedbyGuid());
             int i_tmp = ra.Next(10000);
             float ret = ((float)i_tmp / (float)10000) * max;
+            return ret;
+        }
+
+        public static float GetRandomFloat(float max, float min)
+        {
+            //Random ra = new Random(unchecked((int)DateTime.Now.Millisecond));
+            Random ra = new Random(GetRandomSeedbyGuid());
+            int i_tmp = ra.Next(10000);
+            float ret = ((float)i_tmp / (float)10000);
+            ret = ret * (max - min) + min;
             return ret;
         }
 

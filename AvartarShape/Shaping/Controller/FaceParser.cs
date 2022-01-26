@@ -80,9 +80,9 @@ namespace ShapingController
             RightEyeBrows          = new List<int>() { 22, 23, 24, 25, 26};
 
             LeftUpperFicalOutline  = new List<int>() { 0, 1, 2, 3};
-            RightUpperFicalOutline = new List<int>() { 17, 16, 15, 14};
+            RightUpperFicalOutline = new List<int>() { 16, 15, 14, 13};
             LeftDownFicalOutline   = new List<int>() { 4, 5, 6, 7 };
-            RightDownFicalOutline  = new List<int>() { 13, 12, 11, 10};
+            RightDownFicalOutline  = new List<int>() { 12, 11, 10, 9};
         }
     }
 
@@ -133,47 +133,93 @@ namespace ShapingController
 
         public void SetStandard()
         {
-            OverWidth = 0.7219371f;
-            OverHeight = 0.9668486f;
+            if (false)
+            {
+                //----------------------MobileFaceNet
+                OverWidth = 0.94874f;
+                OverHeight = 0.9122f;
 
-            fatness = 0.75f;
+                fatness = 0.75f;
 
-            FaceOutlineWidth = 1.0f;
-            FaceOutlineHeight = 1.0f;
+                FaceOutlineWidth = 1.0f;
+                FaceOutlineHeight = 1.0f;
 
-            FaceUpperDownRatio = 1.398f;
-            UpperFaceLongness = 0.4056556f;
-            UpperFaceWidth = 1.0f;
-            DownFaceWidth = 1.0f;
-            DownFaceLongness = 0.35353f;
-            ChinSharpness = 0.648f;
+                FaceUpperDownRatio = 1.398f;
+                UpperFaceLongness = 0.4056556f;
+                UpperFaceWidth = 1.0f;
+                DownFaceWidth = 1.0f;
+                DownFaceLongness = 0.35353f;
+                ChinSharpness = 0.648f;
 
-            compacting = 4.4f;
-            DistInterEyes = 0.2647999f;
-            DistInterEyebrows = 0.1552234f;
+                compacting = 4.4f;
+                DistInterEyes = 0.2647999f;
+                DistInterEyebrows = 0.1552234f;
 
-            DistBetwEyesAndNose = 0.336f;
-            DistBetweenNoseAndMouth = 1.0f;
+                DistBetwEyesAndNose = 0.336f;
+                DistBetweenNoseAndMouth = 1.0f;
 
-            EyesNarrowness = 0.193f;
-            EyesLongness = 0.197f;
-            EyebrowLongness = 1.0f;
-            NoseSize = 0.061f;
+                EyesNarrowness = 0.193f;
+                EyesLongness = 0.197f;
+                EyebrowLongness = 1.0f;
+                NoseSize = 0.061f;
 
-            EyeBrowAngle = 1.0f;
-            EyeBrowInAngle = 0.072f;
-            EyeBrowOutAngle = 0.26f;
-            EyeInAngle1 = -0.076f;
-            EyeInAngle2 = 0.1086f;
-            EyeOutAngle1 = 0.2188f;
-            EyeOutAngle2 = -0.291f;
-            EyeAngle = 0.2598f;
+                EyeBrowAngle = 1.0f;
+                EyeBrowInAngle = 0.072f;
+                EyeBrowOutAngle = 0.26f;
+                EyeInAngle1 = -0.076f;
+                EyeInAngle2 = 0.1086f;
+                EyeOutAngle1 = 0.2188f;
+                EyeOutAngle2 = -0.291f;
+                EyeAngle = 0.2598f;
 
-            UpperLipsThickness = 0.0328f;
-            DownLipsThickness = 0.0606f;
-            LipsLongness = 0.34f;
-            //NosePosition = 1.0f;
-            
+                UpperLipsThickness = 0.0328f;
+                DownLipsThickness = 0.0606f;
+                LipsLongness = 0.34f;
+                //NosePosition = 1.0f;
+            }
+            else if (true)
+            {
+                //-----------------------MobileNet
+                OverWidth = 0.94874f;
+                OverHeight = 0.9122f;
+
+                fatness = OverWidth / OverHeight;
+
+                FaceOutlineWidth = 1.0f;
+                FaceOutlineHeight = 1.0f;
+
+                FaceUpperDownRatio = 1.504f;
+                UpperFaceLongness = 0.3729f;
+                UpperFaceWidth = 1.0f;
+                DownFaceWidth = 1.0f;
+                DownFaceLongness = 0.2986f;
+                ChinSharpness = 0.564f;
+
+                compacting = 3.08f;
+                DistInterEyes = 0.269f;
+                DistInterEyebrows = 0.14137f;
+
+                DistBetwEyesAndNose = 0.3133f;
+                DistBetweenNoseAndMouth = 1.0f;
+
+                EyesNarrowness = 0.06753f;
+                EyesLongness = 0.1904f;
+                EyebrowLongness = 1.0f;
+                NoseSize = 0.07046f;
+
+                EyeBrowAngle = 1.0f;
+                EyeBrowInAngle = 0.27414f;
+                EyeBrowOutAngle = 0.5999f;
+                EyeInAngle1 = 0.745613f;
+                EyeInAngle2 = 0.22849f;
+                EyeOutAngle1 = 0.5105f;
+                EyeOutAngle2 = -0.51f;
+                EyeAngle = 0.113f;
+
+                UpperLipsThickness = 0.02785f;
+                DownLipsThickness = 0.05084f;
+                LipsLongness = 0.3427f;
+            }
         }
     }
     public class FaceParser
@@ -255,7 +301,7 @@ namespace ShapingController
             foreach (Vector2d item in marks)
             {
                 item.x = (item.x - minx) / (maxx - minx);
-                item.y = (item.y - miny) / (maxy - miny);
+                item.y = (item.y - miny) / (maxx - minx);
             }
         }
 
@@ -283,10 +329,10 @@ namespace ShapingController
                 data.Add(0.5f);
             }
 
-            //整体脸大小
-            data[0] = Handle(1.0f / info.compacting, 1.0f / StandardInfo.compacting, 5.0f);
+            //整体脸宽
+            data[0] = Handle(info.fatness / info.ChinSharpness, StandardInfo.fatness / info.ChinSharpness, 5.0f);
             //整体脸长度
-            data[2] = Handle(info.UpperFaceLongness + info.DownFaceLongness, StandardInfo.UpperFaceLongness + StandardInfo.DownFaceLongness, 1.0f);
+            data[2] = Handle(info.OverHeight, StandardInfo.OverHeight, 5.0f);
 
             //上脸长度
             data[4] = Handle(info.UpperFaceLongness , StandardInfo.UpperFaceLongness, 5.0f);
@@ -298,8 +344,8 @@ namespace ShapingController
             data[11] = Handle(info.DownFaceLongness, StandardInfo.DownFaceLongness, 5.0f);
 
             //下脸宽度
-            data[6] = Handle(info.fatness, info.fatness, 5.0f);
-            data[12] = Handle(info.fatness, info.fatness, 5.0f);
+            data[6] = Handle(1.0f / info.ChinSharpness, 1.0f / StandardInfo.ChinSharpness, 1.0f);
+            data[12] = Handle(1.0f / info.ChinSharpness, 1.0f / StandardInfo.ChinSharpness, 1.0f);
 
             
             //data[6] = Handle(1.0f / info.ChinSharpness, 1.0f / StandardInfo.ChinSharpness, 5.0f);
@@ -308,14 +354,15 @@ namespace ShapingController
             //眼睛间距
             data[29] = Handle(info.DistInterEyes, StandardInfo.DistInterEyes, 5.0f);
 
-            //眼睛长度
-            data[31] = Handle(info.EyesNarrowness, StandardInfo.EyesNarrowness, 5.0f);
+            //眼睛上下大小
+            data[31] = Handle(info.EyesNarrowness, StandardInfo.EyesNarrowness, 8.0f);
 
-            //眼睛宽度
+            //眼睛左右长短
             data[32] = Handle(info.EyesLongness, StandardInfo.EyesLongness, 3.0f);
 
             //眼睛角度
-            data[30] = Handle(info.EyeAngle, StandardInfo.EyeAngle, 1.0f);
+            //data[30] = Handle(1.0f / info.EyeAngle, 1.0f / StandardInfo.EyeAngle, 1.0f);
+            data[30] = HandleAngle(StandardInfo.EyeAngle, info.EyeAngle, 0.2f);
 
             //内眼角度1
             data[33] = Handle(info.EyeInAngle1, StandardInfo.EyeInAngle1, 0.5f);
@@ -333,8 +380,10 @@ namespace ShapingController
             data[19] = Handle(1.0f / info.EyeBrowInAngle, 1.0f / StandardInfo.EyeBrowInAngle, 0.3f);
 
             //眉毛外角度
-            data[20] = Handle(info.EyeBrowOutAngle, StandardInfo.EyeBrowOutAngle, 0.6f);
-            //眉毛间距
+            data[21] = HandleAngle(info.EyeBrowOutAngle, StandardInfo.EyeBrowOutAngle, 0.5f);
+
+            //眉毛角度
+            data[16] = HandleAngle(StandardInfo.EyeBrowInAngle, info.EyeBrowInAngle, 0.3f);
             //data[]
 
             //眉毛长度
@@ -344,7 +393,7 @@ namespace ShapingController
             //data[20] = info.EyebrowLongness
 
             //眉毛高度
-            data[15] = Handle(info.DistInterEyebrows, StandardInfo.DistInterEyebrows, 3);
+            data[15] = Handle(info.DistInterEyebrows, StandardInfo.DistInterEyebrows, 1);
 
             //上嘴唇厚度
 
@@ -352,6 +401,9 @@ namespace ShapingController
             //下嘴唇厚度
             data[44] = Handle((info.UpperLipsThickness + info.DownLipsThickness),
                 (StandardInfo.UpperLipsThickness + StandardInfo.DownLipsThickness), 2);
+
+            //嘴唇长度
+            data[45] = Handle(info.LipsLongness, StandardInfo.LipsLongness, 5.0f);
 
             //鼻子位置
             data[22] = Handle(1.0f - info.DistBetwEyesAndNose, 1.0f - StandardInfo.DistBetwEyesAndNose, 5);
@@ -378,6 +430,22 @@ namespace ShapingController
             return ret;
         }
 
+        float HandleAngle(float a, float b, float maxangle)
+        {
+            float ret = 0.0f;
+            float tmp = (a - b) / maxangle;
+            ret = tmp + 0.5f;
+
+            if (ret < 0.0f)
+                ret = 0.0f;
+            if (ret > 1.0f)
+            {
+                ret = 1.0f;
+            }
+
+            return ret;
+        }
+
         private void ParseFaceOutline()
         {
             float foo = 0.0f;
@@ -394,16 +462,22 @@ namespace ShapingController
             //OverHeight
             foo = 0.0f;
             bar = 0.0f;
-            foreach (int index in _68LandMarkMeaning.LeftEyeBrows)
-            {
-                foo += marks[index].y;
-            }
-            foreach (int index in _68LandMarkMeaning.RightEyeBrows)
-            {
-                foo += marks[index].y;
-            }
+            //foreach (int index in _68LandMarkMeaning.LeftEyeBrows)
+            //{
+            //    foo += marks[index].y;
+            //}
+            //foreach (int index in _68LandMarkMeaning.RightEyeBrows)
+            //{
+            //    foo += marks[index].y;
+            //}
             bar = marks[_68LandMarkMeaning.ChinPoint].y;
-            info.OverHeight = bar - foo / (_68LandMarkMeaning.LeftEyeBrows.Count + _68LandMarkMeaning.RightEyeBrows.Count);
+            foo += marks[18].y;
+            foo += marks[19].y;
+            foo += marks[24].y;
+            foo += marks[25].y;
+            foo = foo / 4.0f;
+
+            info.OverHeight = bar - foo;
 
             info.fatness = info.OverWidth / info.OverHeight;
 
@@ -534,7 +608,7 @@ namespace ShapingController
             float baz = 0.0f;
 
             info.EyesNarrowness = ((marks[40].y + marks[41].y - marks[37].y - marks[38].y) + 
-                (marks[47].y + marks[48].y - marks[43].y - marks[44].y))/ 4.0f;
+                (marks[47].y + marks[46].y - marks[43].y - marks[44].y))/ 4.0f;
             
             info.EyesLongness = ((marks[39].x - marks[36].x) + (marks[45].x - marks[42].x)) / 2.0f;
 
@@ -548,7 +622,7 @@ namespace ShapingController
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[36].y - marks[39].y;
-            bar = marks[36].x - marks[39].y;
+            bar = marks[36].x - marks[39].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = - baz / 2.0f;
@@ -565,7 +639,7 @@ namespace ShapingController
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[38].y - marks[39].y;
-            bar = marks[38].x - marks[39].y;
+            bar = marks[38].x - marks[39].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = -baz / 2.0f;
@@ -577,7 +651,7 @@ namespace ShapingController
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[47].y - marks[42].y;
-            bar = marks[47].x - marks[42].y;
+            bar = marks[47].x - marks[42].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = -baz / 2.0f;
@@ -589,7 +663,7 @@ namespace ShapingController
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[44].y - marks[45].y;
-            bar = marks[44].x - marks[45].y;
+            bar = marks[44].x - marks[45].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = -baz / 2.0f;
@@ -601,7 +675,7 @@ namespace ShapingController
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[46].y - marks[45].y;
-            bar = marks[46].x - marks[45].y;
+            bar = marks[46].x - marks[45].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = -baz / 2.0f;
@@ -649,19 +723,20 @@ namespace ShapingController
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[20].y - marks[21].y;
-            bar = marks[20].x - marks[21].y;
+            bar = marks[20].x - marks[21].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = -baz / 2.0f;
             //baz = 1.0f / baz;
             info.EyeBrowInAngle = baz;
 
+            //EyeBrowOutAngle
             foo = marks[18].y - marks[17].y;
             bar = marks[18].x - marks[17].x;
             baz = (float)System.Math.Atan(foo / bar);
 
             foo = marks[25].y - marks[26].y;
-            bar = marks[25].x - marks[26].y;
+            bar = marks[25].x - marks[26].x;
             baz = baz - (float)System.Math.Atan(foo / bar);
 
             baz = -baz / 2.0f;

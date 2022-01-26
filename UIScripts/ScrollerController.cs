@@ -145,23 +145,95 @@ namespace ShapingUI
         //TEMP
         public void AddModelBlock()
         {
-            
+
             AddClothBlock(TYPE.CLOTH_HAIR, UISize.HairName);
             AddClothBlock(TYPE.CLOTH_SHIRT, UISize.ShirtName);
             AddClothBlock(TYPE.CLOTH_DRESS, UISize.DressName);
             AddClothBlock(TYPE.CLOTH_SHOES, UISize.ShoesName);
 
-            for(int i = 0; i < 4; i ++)
+
+            UIBlock block = blocks[0];
+
+            //if(type == TYPE.CLOTH_HAIR)
             {
+                List<ShapingTextureTableItem> tmp_list = new List<ShapingTextureTableItem>();
+                block.UpdateInfo(0, block.transform.name);
+                ShapingTextureTableItem item = new ShapingTextureTableItem();
+                item.Path = "Xiayu_hair";
+                item.ThumbPath = "Hair1";
+                ShapingTextureTableItem item1 = new ShapingTextureTableItem();
+                //block.UpdateInfo(0, block.transform.name);
+                item1.Path = "Base_hair";
+                item1.ThumbPath = "Hair2";
 
-                UIBlock block = blocks[i];
-
-                block.UpdateInfo(i, block.transform.name);
-
-                block.AddColorGroup(0, "颜色", core.GetColorGroup(0));
+                ShapingTextureTableItem item2 = new ShapingTextureTableItem();
+                //block.UpdateInfo(2, block.transform.name);
+                item2.Path = "Xiayu_hair_02";
+                item2.ThumbPath = "Hair3";
+                ShapingTextureTableItem item3 = new ShapingTextureTableItem();
+                //block.UpdateInfo(3, block.transform.name);
+                item3.Path = "Base_hair_02";
+                item3.ThumbPath = "Hair4";
+                tmp_list.Add(item);
+                tmp_list.Add(item1);
+                tmp_list.Add(item2);
+                tmp_list.Add(item3);
+                block.AddModelGroup(0, "模型", tmp_list);
+                block.AddColorGroup(0, "颜色", core.GetColorGroup(1));
+            }
+            //else if(type == TYPE.CLOTH_SHIRT)
+            {
+                List<ShapingTextureTableItem> tmp_list = new List<ShapingTextureTableItem>();
+                block = blocks[1];
+                block.UpdateInfo(1, block.transform.name);
+                ShapingTextureTableItem item = new ShapingTextureTableItem();
+                item.Path = "Xiayu_clothes";
+                item.ThumbPath = "shangyi2";
+                ShapingTextureTableItem item1 = new ShapingTextureTableItem();
+                item1.Path = "Base_clothes";
+                item1.ThumbPath = "shangyi1";
+                tmp_list.Add(item);
+                tmp_list.Add(item1);
+                block.AddModelGroup(0, "模型", tmp_list);
+                block.AddColorGroup(0, "颜色", core.GetColorGroup(1));
+            }
+            //else if (type == TYPE.CLOTH_DRESS)
+            {
+                List<ShapingTextureTableItem> tmp_list = new List<ShapingTextureTableItem>();
+                block = blocks[2];
+                block.UpdateInfo(2, block.transform.name);
+                ShapingTextureTableItem item = new ShapingTextureTableItem();
+                item.Path = "Xiayu_kuzi";
+                item.ThumbPath = "kuzi2";
+                ShapingTextureTableItem item1 = new ShapingTextureTableItem();
+                item1.Path = "Base_kuzi";
+                item1.ThumbPath = "kuzi1";
+                tmp_list.Add(item);
+                tmp_list.Add(item1);
+                block.AddModelGroup(0, "模型", tmp_list);
+                block.AddColorGroup(0, "颜色", core.GetColorGroup(1));
+            }
+            //else if (type == TYPE.CLOTH_SHOES)
+            {
+                List<ShapingTextureTableItem> tmp_list = new List<ShapingTextureTableItem>();
+                block = blocks[3];
+                block.UpdateInfo(3, block.transform.name);
+                ShapingTextureTableItem item = new ShapingTextureTableItem();
+                item.Path = "Xiayu_shoes";
+                item.ThumbPath = "shoes1";
+                ShapingTextureTableItem item1 = new ShapingTextureTableItem();
+                item1.Path = "Base_shoes";
+                item1.ThumbPath = "shoes2";
+                tmp_list.Add(item);
+                tmp_list.Add(item1);
+                block.AddModelGroup(0, "模型", tmp_list);
+                block.AddColorGroup(0, "颜色", core.GetColorGroup(1));
             }
 
-
+            foreach(var item in blocks)
+            {
+                item.UpdateSize();
+            }    
         }
 
         public void AddClothBlock(TYPE typevalue, string lablename)

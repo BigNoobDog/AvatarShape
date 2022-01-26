@@ -27,10 +27,10 @@ namespace ShapingPlayer
 
         }
 
-        public void Setup(ShapingControllerCore core)
+        public void Setup(ShapingControllerCore core, PlayerMeshAnim meshman)
         {
             controller = core;
-
+            meshMan = meshman;
 
 
         }
@@ -84,6 +84,45 @@ namespace ShapingPlayer
                 LeftEyeMaterial.SetColor(configitem.name, color);
                 RightEyeMaterial.SetColor(configitem.name, color);
             }
+            else if(configitem.part == PART.HAIR || configitem.part == PART.DOWNCLOTH || 
+                configitem.part == PART.UPPERCLOTH || configitem.part == PART.SHOE)
+            {
+                GetMaterialByPart(configitem.part).SetColor(configitem.name, color);
+            }
+        }
+
+        public Material GetMaterialByPart(PART part)
+        {
+            GameObject gotmp;
+            if (part == PART.HAIR)
+                gotmp = meshMan.MeshDictory[meshMan.hairmesh].gameObject;
+            else if(part == PART.DOWNCLOTH)
+            {
+                gotmp = meshMan.MeshDictory[meshMan.kuzimesh].gameObject;
+            }
+            else if(part == PART.UPPERCLOTH)
+            {
+                gotmp = meshMan.MeshDictory[meshMan.shirtmesh].gameObject;
+            }
+            else if(part == PART.SHOE)
+            {
+                gotmp = meshMan.MeshDictory[meshMan.shoesmesh].gameObject;
+            }
+            else
+            {
+                return null;
+            }
+
+            SkinnedMeshRenderer SMR = gotmp.GetComponent<SkinnedMeshRenderer>();
+            if (SMR == null)
+                return null;
+
+            List<Material> materials = new List<Material>();
+            SMR.GetMaterials(materials);
+            if (materials.Count > 0)
+                return materials[0];
+
+            return null;
         }
 
 
@@ -199,5 +238,6 @@ namespace ShapingPlayer
         }
 
         private ShapingControllerCore controller;
+        private PlayerMeshAnim meshMan;
     }
 }

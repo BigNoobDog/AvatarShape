@@ -508,14 +508,44 @@ namespace ShapingController
 
         public ShapingMaterialColorItem GetMaterialColorConfigItem(TYPE type, int itemindex)
         {
-            if(type == TYPE.MAKEUP)
+            if (type == TYPE.MAKEUP)
             {
                 return makeup.GetColorConfigItem(itemindex);
             }
-            else
+            else if (type == TYPE.CLOTH_HAIR)
             {
-                return null;
+                ShapingMaterialColorItem item = new ShapingMaterialColorItem();
+                item.name = "_BaseColor";
+                item.TableIndex = 1;
+                item.part = PART.HAIR;
+                return item;
             }
+            else if (type == TYPE.CLOTH_DRESS)
+            {
+                ShapingMaterialColorItem item = new ShapingMaterialColorItem();
+                item.name = "_BaseColor";
+                item.TableIndex = 1;
+                item.part = PART.DOWNCLOTH;
+                return item;
+            }
+            else if (type == TYPE.CLOTH_SHIRT)
+            {
+                ShapingMaterialColorItem item = new ShapingMaterialColorItem();
+                item.name = "_BaseColor";
+                item.TableIndex = 1;
+                item.part = PART.UPPERCLOTH;
+                return item;
+            }
+            else if (type == TYPE.CLOTH_SHOES)
+            {
+                ShapingMaterialColorItem item = new ShapingMaterialColorItem();
+                item.name = "_BaseColor";
+                item.TableIndex = 1;
+                item.part = PART.SHOE;
+                return item;
+            }
+            else
+                return null;
             
         }
 

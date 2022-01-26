@@ -67,7 +67,7 @@ namespace ShapingPlayer
 
             RunCmd("cmd.exe", "/c copy "+ filename + " D:\\WorkGround\\AI\\pytorch_face_landmark\\samples\\12--Group\\" + tmpfilename);
             //RunCmd("PowerShell.exe", "cd D:\\WorkGround\\AI\\pytorch_face_landmark\\");
-            RunCmd("PowerShell.exe", "python test_batch_detections.py", "D:\\WorkGround\\AI\\pytorch_face_landmark\\");
+            //RunCmd("PowerShell.exe", "python test_batch_detections.py", "D:\\WorkGround\\AI\\pytorch_face_landmark\\");
         }
 
 
